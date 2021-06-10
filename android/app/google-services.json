@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "85089108776",
+    "project_id": "teamly-meetings",
+    "storage_bucket": "teamly-meetings.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:85089108776:android:da0080f33c4d49a5e3061d",
+        "android_client_info": {
+          "package_name": "com.meetings.teamly"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "85089108776-bqf6j0qnq1k42gggdghfbnm1p4shfmbh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYfORTJlNcm9uvVlKHm36pNNS_0fefbdE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "85089108776-bqf6j0qnq1k42gggdghfbnm1p4shfmbh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

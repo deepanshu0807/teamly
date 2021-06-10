@@ -1,0 +1,52 @@
+name: my_team
+description: A new Flutter project.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.2.0+2
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+
+  firebase_auth: ^1.0.3
+  firebase_core: ^1.0.3
+  cloud_firestore:
+  firebase:
+  uuid:
+  intl:
+  pin_code_text_field:
+  flutter_custom_clippers:
+  image_picker:
+  flutter_screenutil:
+  google_fonts:
+  switcher_button:
+  flutter_advanced_switch:  
+  community_material_icon:
+  rounded_loading_button:
+  clipboard:
+  share_plus:
+  share:
+  jitsi_meet:
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_launcher_icons: 
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "images/logo.png"
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - images/
