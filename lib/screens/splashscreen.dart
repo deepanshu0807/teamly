@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   startTimer() {
-    Timer(Duration(seconds: 3), changeScreen);
+    Timer(Duration(seconds: 2), changeScreen);
   }
 
   changeScreen() async {
@@ -81,25 +81,25 @@ class _SplashScreenState extends State<SplashScreen> {
                 backgroundColor: Colors.white,
               ),
             ),
-            Column(
-              children: [
-                Text(
-                  "Powered by",
-                  textAlign: TextAlign.center,
-                  style: text20.copyWith(
-                    color: Colors.grey,
-                  ),
-                ),
-                Text(
-                  "Jitsi",
-                  textAlign: TextAlign.center,
-                  style: text20.copyWith(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            )
+            // Column(
+            //   children: [
+            //     Text(
+            //       "Powered by",
+            //       textAlign: TextAlign.center,
+            //       style: text20.copyWith(
+            //         color: Colors.grey,
+            //       ),
+            //     ),
+            //     Text(
+            //       "Jitsi",
+            //       textAlign: TextAlign.center,
+            //       style: text20.copyWith(
+            //         color: Colors.black,
+            //         fontWeight: FontWeight.bold,
+            //       ),
+            //     ),
+            //   ],
+            // )
           ],
         ),
       ),

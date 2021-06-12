@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
-// import 'package:jitsi_meet/feature_flag/feature_flag_enum.dart';
-import 'package:jitsi_meet/jitsi_meet.dart';
+import 'package:meet_hour/meet_hour.dart';
+// import 'package:jitsi_meet/jitsi_meet.dart';
 import 'package:my_team/utils/utility.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
 
@@ -42,13 +42,13 @@ class _JoinMeetState extends State<JoinMeet> {
         featureFlags[FeatureFlagEnum.PIP_ENABLED] = false;
       }
 
-      var options = JitsiMeetingOptions(room: controller.text)
+      var options = MeetHourMeetingOptions(room: controller.text)
         ..userDisplayName = nameC.text.isEmpty ? widget.username : nameC.text
         ..audioMuted = !_controller2.value
         ..videoMuted = !_controller1.value
         ..featureFlags.addAll(featureFlags);
 
-      await JitsiMeet.joinMeeting(options);
+      await MeetHour.joinMeeting(options);
     } catch (e) {
       print("Error: $e");
     }
@@ -299,7 +299,7 @@ class _JoinMeetState extends State<JoinMeet> {
                     borderRadius: BorderRadius.circular(25)),
                 padding: EdgeInsets.all(10.h),
                 color: AppColors.primaryColor,
-                onPressed: () {
+                onPressed: () async {
                   if (controller.text.length < 6) {
                     var snackbar = SnackBar(
                         padding: EdgeInsets.symmetric(
@@ -320,7 +320,7 @@ class _JoinMeetState extends State<JoinMeet> {
                         ));
                     ScaffoldMessenger.of(context).showSnackBar(snackbar);
                   } else {
-                    joinMeet();
+                    await joinMeet();
                   }
                 },
                 child: Text(

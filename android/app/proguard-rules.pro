@@ -1,20 +1,3 @@
-#=== Flutter Wrapper ===#
--keep class io.flutter.app.** { *; }
--keep class io.flutter.plugin.**  { *; }
--keep class io.flutter.util.**  { *; }
--keep class io.flutter.view.**  { *; }
--keep class io.flutter.**  { *; }
--keep class io.flutter.plugins.**  { *; }
-
-#=== Jitsi ===#
-# Source: https://github.com/jitsi/jitsi-meet/blob/master/android/app/proguard-rules.pro
-# Check above link for changes if release builds are broken again
-
-# Copyright (c) Facebook, Inc. and its affiliates.
-#
-# This source code is licensed under the MIT license found in the
-# LICENSE file in the root directory of this source tree.
-
 # Add project specific ProGuard rules here.
 # By default, the flags in this file are appended to flags specified
 # in /usr/local/Cellar/android-sdk/24.3.3/tools/proguard/proguard-android.txt
@@ -103,6 +86,3 @@
 
 # Rule to avoid build errors related to SVGs.
 -keep public class com.horcrux.svg.** {*;}
-
-# Hermes
--keep class com.facebook.hermes.unicode.** { *; }

@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:jitsi_meet/jitsi_meet.dart';
+import 'package:meet_hour/meet_hour.dart';
+import 'package:meet_hour/meet_hour_platform_interface.dart';
+// import 'package:jitsi_meet/jitsi_meet.dart';
 import 'package:my_team/utils/utility.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:uuid/uuid.dart';
 import 'package:clipboard/clipboard.dart';
 
@@ -37,13 +39,13 @@ class _CreateMeetState extends State<CreateMeet> {
         featureFlags[FeatureFlagEnum.PIP_ENABLED] = false;
       }
 
-      var options = JitsiMeetingOptions(room: code)
+      var options = MeetHourMeetingOptions(room: code)
         ..userDisplayName = widget.username
         ..audioMuted = true
         ..videoMuted = true
         ..featureFlags.addAll(featureFlags);
 
-      await JitsiMeet.joinMeeting(options);
+      await MeetHour.joinMeeting(options);
     } catch (e) {
       print("Error: $e");
     }
@@ -279,7 +281,7 @@ class _CreateMeetState extends State<CreateMeet> {
                         borderRadius: BorderRadius.circular(25)),
                     padding: EdgeInsets.all(10.h),
                     color: AppColors.primaryColor,
-                    onPressed: () {
+                    onPressed: () async {
                       if (!pressed) {
                         setState(() {
                           code = Uuid().v1().substring(0, 6);
@@ -288,7 +290,7 @@ class _CreateMeetState extends State<CreateMeet> {
                           hei = 150;
                         });
                       } else {
-                        joinMeet();
+                        await joinMeet();
                       }
                     },
                     child: Text(
