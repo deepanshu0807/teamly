@@ -10,7 +10,7 @@ import 'package:pin_code_text_field/pin_code_text_field.dart';
 class JoinMeet extends StatefulWidget {
   final String username;
 
-  const JoinMeet({Key? key, required this.username}) : super(key: key);
+  const JoinMeet({Key key, @required this.username}) : super(key: key);
   @override
   _JoinMeetState createState() => _JoinMeetState();
 }
@@ -21,7 +21,7 @@ class _JoinMeetState extends State<JoinMeet> {
   TextEditingController controller = TextEditingController(text: "");
   TextEditingController nameC = TextEditingController();
   bool hasError = false;
-  late String errorMessage;
+  String errorMessage;
 
   @override
   void dispose() {

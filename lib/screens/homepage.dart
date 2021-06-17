@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage>
 
   double menuH = 100.h;
   double menuW = 100.h;
-  late AnimationController _animationController;
+  AnimationController _animationController;
   bool isPlaying = false;
 
   @override
@@ -33,9 +33,9 @@ class _HomePageState extends State<HomePage>
 
   getData() async {
     final userDoc =
-        await userCollection.doc(FirebaseAuth.instance.currentUser!.uid).get();
+        await userCollection.doc(FirebaseAuth.instance.currentUser.uid).get();
     setState(() {
-      username = userDoc.data()?['username'];
+      username = userDoc.data()['username'];
     });
   }
 

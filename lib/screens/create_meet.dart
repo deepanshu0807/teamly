@@ -12,7 +12,7 @@ import 'package:clipboard/clipboard.dart';
 class CreateMeet extends StatefulWidget {
   final String username;
 
-  const CreateMeet({Key? key, required this.username}) : super(key: key);
+  const CreateMeet({Key key, @required this.username}) : super(key: key);
   @override
   _CreateMeetState createState() => _CreateMeetState();
 }

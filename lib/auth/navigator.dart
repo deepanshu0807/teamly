@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:my_team/screens/entry_screen.dart';
 import 'package:my_team/screens/homepage.dart';
+import 'package:my_team/screens/login_screen.dart';
 
 class AppNavigator extends StatefulWidget {
   @override
@@ -31,7 +32,7 @@ class _AppNavigatorState extends State<AppNavigator> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: isSigned == false ? EntryScreen() : HomePage(),
+      body: isSigned == false ? LoginScreen() : HomePage(),
     );
   }
 }
