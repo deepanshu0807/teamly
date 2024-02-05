@@ -38,10 +38,10 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   getData() async {
     final userDoc =
-        await userCollection.doc(FirebaseAuth.instance.currentUser.uid).get();
+        await userCollection.doc(FirebaseAuth.instance.currentUser!.uid).get();
     setState(() {
-      name = userDoc.data()['username'];
-      email = userDoc.data()['email'];
+      name = userDoc.data()!['username'];
+      email = userDoc.data()!['email'];
       loading = false;
     });
   }
@@ -164,9 +164,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                 ),
                 Positioned(
                   bottom: 20.h,
-                  child: FlatButton(
-                    height: 60.h,
-                    minWidth: screenWidth(context) / 2,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      fixedSize: Size(screenWidth(context) / 2, 60.h),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30)),
+                      backgroundColor: Colors.black,
+                    ),
                     onPressed: () {
                       setState(() {
                         loading = true;
@@ -179,9 +183,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 builder: (context) => AppNavigator()));
                       });
                     },
-                    color: Colors.black,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -290,12 +291,14 @@ class _ProfileScreenState extends State<ProfileScreen>
                               verticalSpaceMedium20,
                               if (animplaying)
                                 Center(
-                                  child: FlatButton(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(25)),
-                                    padding: EdgeInsets.all(10.h),
-                                    color: AppColors.primaryColor,
+                                  child: TextButton(
+                                    style: TextButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(25)),
+                                      padding: EdgeInsets.all(10.h),
+                                      backgroundColor: AppColors.primaryColor,
+                                    ),
                                     onPressed: () {
                                       setState(() {
                                         loading = true;

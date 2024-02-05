@@ -20,22 +20,19 @@ class _HomePageState extends State<HomePage>
 
   double menuH = 100.h;
   double menuW = 100.h;
-  AnimationController _animationController;
   bool isPlaying = false;
 
   @override
   void initState() {
     super.initState();
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 450));
     getData();
   }
 
   getData() async {
     final userDoc =
-        await userCollection.doc(FirebaseAuth.instance.currentUser.uid).get();
+        await userCollection.doc(FirebaseAuth.instance.currentUser!.uid).get();
     setState(() {
-      username = userDoc.data()['username'];
+      username = userDoc.data()!['username'];
     });
   }
 
@@ -160,16 +157,15 @@ class _HomePageState extends State<HomePage>
                       ),
                     ],
                   ),
-                  child: FlatButton(
-                    splashColor: AppColors.primaryColor,
-                    focusColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    minWidth: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                    //height: 100.h,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    color: Colors.white,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                        minimumSize: Size(double.infinity, 0),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        backgroundColor: Colors.white,
+                        surfaceTintColor: AppColors.primaryColor),
                     onPressed: () {
                       Navigator.push(
                           context,
@@ -233,16 +229,15 @@ class _HomePageState extends State<HomePage>
                       ),
                     ],
                   ),
-                  child: FlatButton(
-                    splashColor: AppColors.primaryColor,
-                    focusColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    minWidth: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                    //height: 100.h,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    color: Colors.white,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                        minimumSize: Size(double.infinity, 0),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        backgroundColor: Colors.white,
+                        surfaceTintColor: AppColors.primaryColor),
                     onPressed: () {
                       Navigator.push(
                           context,

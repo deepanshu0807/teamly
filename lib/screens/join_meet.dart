@@ -2,26 +2,29 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
+import 'package:flutter_utility/constant_utility.dart';
 import 'package:meet_hour/meet_hour.dart';
 // import 'package:jitsi_meet/jitsi_meet.dart';
 import 'package:my_team/utils/utility.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
 
+import '../widgets/text_input_find_out.dart';
+
 class JoinMeet extends StatefulWidget {
   final String username;
 
-  const JoinMeet({Key key, @required this.username}) : super(key: key);
+  const JoinMeet({required this.username});
   @override
   _JoinMeetState createState() => _JoinMeetState();
 }
 
 class _JoinMeetState extends State<JoinMeet> {
-  final _controller1 = AdvancedSwitchController();
-  final _controller2 = AdvancedSwitchController();
+  final _controller1 = ValueNotifier<bool>(false);
+  final _controller2 = ValueNotifier<bool>(false);
   TextEditingController controller = TextEditingController(text: "");
   TextEditingController nameC = TextEditingController();
   bool hasError = false;
-  String errorMessage;
+  // String errorMessage;
 
   @override
   void dispose() {
@@ -57,22 +60,22 @@ class _JoinMeetState extends State<JoinMeet> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.secondaryColor,
       body: Container(
         height: screenHeight(context),
         width: screenWidth(context),
         padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 20.w),
         decoration: BoxDecoration(
-          color: AppColors.backgroundColor,
-          // gradient: LinearGradient(
-          //   colors: [
-          //     AppColors.backgroundColor,
-          //     // Colors.white12,
-          //     Colors.white,
-          //   ],
-          //   begin: Alignment.topCenter,
-          //   end: Alignment.bottomCenter,
-          // ),
+          // color: AppColors.backgroundColor,
+          gradient: LinearGradient(
+            colors: [
+              AppColors.secondaryColor,
+              // Colors.white12,
+              AppColors.primaryColor,
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
         ),
         child: ListView(
           physics: BouncingScrollPhysics(),
@@ -83,80 +86,102 @@ class _JoinMeetState extends State<JoinMeet> {
                   onTap: () => Navigator.pop(context),
                   child: Image.asset(
                     "images/back.png",
-                    width: 50.w,
-                    color: AppColors.primaryColor,
+                    width: 30.w,
+                    color: Colors.white,
                   ),
                 ),
               ],
             ),
-            SizedBox(
-              height: screenHeight(context) / 4,
-              width: double.infinity,
-              child: Stack(
-                children: [
-                  Positioned(
-                    right: 0,
-                    bottom: 0,
-                    top: 0,
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      height: screenHeight(context) / 6,
-                      width: screenWidth(context) / 1.7,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(25),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.primaryColor.withOpacity(0.01),
-                            blurRadius: 30.0,
-                            offset: Offset(0, 10),
-                          ),
-                        ],
-                      ),
-                      alignment: Alignment.center,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(25),
-                        child: Hero(
-                          tag: "connect",
-                          child: Image.asset(
-                            "images/connect.png",
-                            width: screenWidth(context),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Join",
-                        style: text22.copyWith(
-                            fontSize: 50.sp,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primaryColor),
-                      ),
-                      Text(
-                        "Meeting",
-                        style: text22.copyWith(
-                            fontSize: 45.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.grey),
-                      ),
-                    ],
-                  ),
-                ],
+            verticalSpaceMedium20,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Join",
+                  style: text30.copyWith(
+                      letterSpacing: -2,
+                      fontSize: 45.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white),
+                ),
+                Text(
+                  "Meeting",
+                  style: text60Italiana.copyWith(
+                      fontSize: 35.sp,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white70),
+                ),
+              ],
+            ),
+            // SizedBox(
+            //   height: screenHeight(context) / 4,
+            //   width: double.infinity,
+            //   child: Stack(
+            //     children: [
+            //       Positioned(
+            //         right: 0,
+            //         bottom: 0,
+            //         top: 0,
+            //         child: Container(
+            //           padding: EdgeInsets.all(10),
+            //           height: screenHeight(context) / 6,
+            //           width: screenWidth(context) / 1.7,
+            //           decoration: BoxDecoration(
+            //             color: Colors.white,
+            //             borderRadius: BorderRadius.circular(25),
+            //             boxShadow: [
+            //               BoxShadow(
+            //                 color: AppColors.primaryColor.withOpacity(0.01),
+            //                 blurRadius: 30.0,
+            //                 offset: Offset(0, 10),
+            //               ),
+            //             ],
+            //           ),
+            //           alignment: Alignment.center,
+            //           child: ClipRRect(
+            //             borderRadius: BorderRadius.circular(25),
+            //             child: Hero(
+            //               tag: "connect",
+            //               child: Image.asset(
+            //                 "images/connect.png",
+            //                 width: screenWidth(context),
+            //               ),
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //       Column(
+            //         crossAxisAlignment: CrossAxisAlignment.start,
+            //         mainAxisAlignment: MainAxisAlignment.center,
+            //         children: [
+            //           Text(
+            //             "Join",
+            //             style: text22.copyWith(
+            //                 fontSize: 50.sp,
+            //                 fontWeight: FontWeight.w600,
+            //                 color: AppColors.primaryColor),
+            //           ),
+            //           Text(
+            //             "Meeting",
+            //             style: text22.copyWith(
+            //                 fontSize: 45.sp,
+            //                 fontWeight: FontWeight.w400,
+            //                 color: Colors.grey),
+            //           ),
+            //         ],
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            verticalSpaceLarge,
+            Text(
+              "Enter meeting code:",
+              style: text22.copyWith(
+                color: Colors.white60,
               ),
             ),
-            verticalSpaceMedium25,
-            Text(
-              "Enter code",
-              style: text22.copyWith(
-                  fontSize: 30.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.grey),
-            ),
+            verticalSpaceMedium15,
             Container(
               alignment: Alignment.center,
               width: double.infinity,
@@ -165,10 +190,10 @@ class _JoinMeetState extends State<JoinMeet> {
                 controller: controller,
                 hideCharacter: false,
                 highlight: false,
-                highlightColor: AppColors.primaryColor,
-                defaultBorderColor: Colors.grey.shade200,
-                hasTextBorderColor: AppColors.primaryColor,
-                highlightPinBoxColor: AppColors.primaryColor,
+                highlightColor: AppColors.secondaryColor,
+                defaultBorderColor: Colors.black,
+                hasTextBorderColor: AppColors.secondaryColor,
+                highlightPinBoxColor: AppColors.secondaryColor,
                 maxLength: 6,
                 hasError: hasError,
                 // maskCharacter: "😎",
@@ -179,11 +204,11 @@ class _JoinMeetState extends State<JoinMeet> {
                 },
                 onDone: (text) {},
                 pinBoxWidth: 48.w,
-                pinBoxHeight: 70.h,
+                pinBoxHeight: 60.h,
                 hasUnderline: false,
                 wrapAlignment: WrapAlignment.spaceBetween,
                 pinBoxDecoration:
-                    ProvidedPinBoxDecoration.roundedPinBoxDecoration,
+                    ProvidedPinBoxDecoration.defaultPinBoxDecoration,
                 pinTextStyle:
                     text22.copyWith(color: Colors.white, fontSize: 25.sp),
                 pinTextAnimatedSwitcherTransition:
@@ -197,56 +222,87 @@ class _JoinMeetState extends State<JoinMeet> {
                 keyboardType: TextInputType.emailAddress,
               ),
             ),
-            verticalSpaceMedium15,
+            verticalSpaceLarge,
             Text(
-              "Enter name",
-              style: text22.copyWith(
-                  fontSize: 30.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.grey),
+              "Enter your name",
+              style: text22.copyWith(color: Colors.white60),
             ),
             verticalSpaceSmall,
-            Container(
-              height: 55,
-              child: TextFormField(
-                controller: nameC,
-                cursorColor: AppColors.getPrimaryColor(),
-                style: text22.copyWith(
-                  color: AppColors.getPrimaryColor(),
-                  fontSize: 28.sp,
-                ),
-                decoration: InputDecoration(
-                    hintText: "Leave if you want username",
-                    hintStyle: text20.copyWith(
-                      color: Colors.grey,
-                    ),
-                    fillColor: Colors.white,
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(5),
-                    )),
-                onChanged: (value) {},
+
+            TextField(
+              keyboardType: TextInputType.name,
+              style: text22.copyWith(
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+                decorationStyle: TextDecorationStyle.wavy,
               ),
+              cursorColor: Colors.white,
+              cursorWidth: 2,
+              decoration: InputDecoration(
+                fillColor: AppColors.secondaryColor,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: borderR10,
+                  borderSide: BorderSide(
+                    color: Colors.black,
+                    width: 2,
+                    style: BorderStyle.solid,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: borderR10,
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                    width: 2,
+                    style: BorderStyle.solid,
+                  ),
+                ),
+                hintText: "Leave if you want username",
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                hintStyle: text16.copyWith(
+                  color: Colors.white60,
+                  fontWeight: FontWeight.normal,
+                  decorationStyle: TextDecorationStyle.wavy,
+                ),
+              ),
+              controller: nameC,
             ),
-            verticalSpaceMedium25,
+
+            // Container(
+            //   height: 55,
+            //   child: TextFormField(
+            //     controller: nameC,
+            //     cursorColor: AppColors.getPrimaryColor(),
+            //     style: text22.copyWith(
+            //       color: AppColors.getPrimaryColor(),
+            //       fontSize: 28.sp,
+            //     ),
+            //     decoration: InputDecoration(
+            //         hintText: "Leave if you want username",
+            //         hintStyle: text20.copyWith(
+            //           color: Colors.grey,
+            //         ),
+            //         fillColor: Colors.white,
+            //         filled: true,
+            //         border: OutlineInputBorder(
+            //           borderSide: BorderSide.none,
+            //           borderRadius: BorderRadius.circular(5),
+            //         )),
+            //     onChanged: (value) {},
+            //   ),
+            // ),
+            verticalSpaceMedium30,
             Text(
               "Other settings",
-              style: text22.copyWith(
-                  fontSize: 30.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.grey),
+              style: text22.copyWith(color: Colors.white60),
             ),
-            verticalSpaceMedium20,
+            verticalSpaceMedium15,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "Camera",
-                  style: text22.copyWith(
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey),
+                  style: text22.copyWith(color: Colors.white),
                 ),
                 AdvancedSwitch(
                   activeChild: Icon(
@@ -257,7 +313,7 @@ class _JoinMeetState extends State<JoinMeet> {
                     Icons.videocam_off,
                     color: Colors.white,
                   ),
-                  activeColor: AppColors.primaryColor,
+                  activeColor: AppColors.secondaryColor,
                   inactiveColor: Colors.black,
                   width: 60,
                   controller: _controller1,
@@ -270,10 +326,7 @@ class _JoinMeetState extends State<JoinMeet> {
               children: [
                 Text(
                   "Audio",
-                  style: text22.copyWith(
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey),
+                  style: text22.copyWith(color: Colors.white),
                 ),
                 AdvancedSwitch(
                   activeChild: Icon(
@@ -291,14 +344,15 @@ class _JoinMeetState extends State<JoinMeet> {
                 ),
               ],
             ),
-            verticalSpaceMedium30,
+            verticalSpaceLarge,
             Center(
-              child: FlatButton(
-                minWidth: screenWidth(context) / 1.5,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25)),
-                padding: EdgeInsets.all(10.h),
-                color: AppColors.primaryColor,
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: AppColors.secondaryColor,
+                  minimumSize: Size(screenWidth(context) / 1.8, 0),
+                  shape: shape10,
+                  padding: EdgeInsets.all(10.h),
+                ),
                 onPressed: () async {
                   if (controller.text.length < 6) {
                     var snackbar = SnackBar(

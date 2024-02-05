@@ -6,7 +6,7 @@ import 'auth-result-status.dart';
 
 class FirebaseAuthHelper {
   final _auth = FirebaseAuth.instance;
-  AuthResultStatus _status;
+  AuthResultStatus? _status;
 
   ///
   /// Helper Functions
@@ -17,10 +17,10 @@ class FirebaseAuthHelper {
       final authResult = await _auth.createUserWithEmailAndPassword(
           email: email, password: pass);
       if (authResult.user != null) {
-        await userCollection.doc(authResult.user.uid).set({
+        await userCollection.doc(authResult.user!.uid).set({
           'username': name,
           'email': email,
-          'uid': authResult.user.uid,
+          'uid': authResult.user!.uid,
         });
         _status = AuthResultStatus.successful;
       } else {
@@ -30,7 +30,7 @@ class FirebaseAuthHelper {
       print('Exception @createAccount: $e');
       _status = AuthExceptionHandler.handleException(e);
     }
-    return _status;
+    return _status!;
   }
 
   Future<AuthResultStatus> login({email, pass}) async {
@@ -47,7 +47,7 @@ class FirebaseAuthHelper {
       print('Exception @createAccount: $e');
       _status = AuthExceptionHandler.handleException(e);
     }
-    return _status;
+    return _status!;
   }
 
   logout() {

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_utility/constant_utility.dart';
 import 'package:meet_hour/meet_hour.dart';
 import 'package:meet_hour/meet_hour_platform_interface.dart';
 // import 'package:jitsi_meet/jitsi_meet.dart';
@@ -12,7 +13,7 @@ import 'package:clipboard/clipboard.dart';
 class CreateMeet extends StatefulWidget {
   final String username;
 
-  const CreateMeet({Key key, @required this.username}) : super(key: key);
+  const CreateMeet({required this.username});
   @override
   _CreateMeetState createState() => _CreateMeetState();
 }
@@ -25,6 +26,19 @@ class _CreateMeetState extends State<CreateMeet> {
       'https://play.google.com/store/apps/details?id=com.meetings.teamly';
 
   double hei = 75;
+
+  // final jitsiMeet = JitsiMeet();
+
+  @override
+  void initState() {
+    setState(() {
+      code = Uuid().v1().substring(0, 6);
+      pressed = true;
+      opac = 1;
+      hei = 150;
+    });
+    super.initState();
+  }
 
   joinMeet() async {
     try {
@@ -54,22 +68,22 @@ class _CreateMeetState extends State<CreateMeet> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.secondaryColor,
       body: Container(
         height: screenHeight(context),
         width: screenWidth(context),
         padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 20.w),
         decoration: BoxDecoration(
-          color: AppColors.backgroundColor,
-          // gradient: LinearGradient(
-          //   colors: [
-          //     AppColors.backgroundColor,
-          //     // Colors.white12,
-          //     Colors.white,
-          //   ],
-          //   begin: Alignment.topCenter,
-          //   end: Alignment.bottomCenter,
-          // ),
+          // color: AppColors.secondaryColor,
+          gradient: LinearGradient(
+            colors: [
+              AppColors.secondaryColor,
+              // Colors.white12,
+              AppColors.primaryColor,
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
         ),
         child: Stack(
           children: [
@@ -82,74 +96,125 @@ class _CreateMeetState extends State<CreateMeet> {
                       onTap: () => Navigator.pop(context),
                       child: Image.asset(
                         "images/back.png",
-                        width: 50.w,
-                        color: AppColors.primaryColor,
+                        width: 30.w,
+                        color: Colors.white,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: screenHeight(context) / 4,
-                  width: double.infinity,
-                  child: Stack(
+                verticalSpaceMedium20,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Create",
+                      style: text30.copyWith(
+                          letterSpacing: -2,
+                          fontSize: 45.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white),
+                    ),
+                    Text(
+                      "Meeting",
+                      style: text60Italiana.copyWith(
+                          fontSize: 35.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white70),
+                    ),
+                  ],
+                ),
+                verticalSpaceLarge,
+                Container(
+                  padding: padding15,
+                  decoration: BoxDecoration(
+                    color: Colors.black38,
+                    borderRadius: borderR10,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Positioned(
-                        right: 0,
-                        bottom: 0,
-                        top: 0,
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          height: screenHeight(context) / 6,
-                          width: screenWidth(context) / 1.7,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(25),
-                            boxShadow: [
-                              BoxShadow(
-                                color: AppColors.primaryColor.withOpacity(0.01),
-                                blurRadius: 30.0,
-                                offset: Offset(0, 10),
-                              ),
-                            ],
-                          ),
-                          alignment: Alignment.center,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(25),
-                            child: Hero(
-                              tag: "meetweb",
-                              child: Image.asset(
-                                "images/meetweb.png",
-                                width: screenWidth(context),
-                              ),
-                            ),
-                          ),
+                      Expanded(
+                        flex: 1,
+                        child: Icon(
+                          Icons.info_rounded,
+                          color: Colors.white54,
                         ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Create",
-                            style: text22.copyWith(
-                                letterSpacing: -2,
-                                fontSize: 45.sp,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.primaryColor),
-                          ),
-                          Text(
-                            "Meeting",
-                            style: text22.copyWith(
-                                fontSize: 45.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.grey),
-                          ),
-                        ],
+                      Expanded(
+                        flex: 5,
+                        child: Text(
+                          "Create a code and invite your friends or colleagues to your meeting",
+                          style: text14.copyWith(color: Colors.white54),
+                        ),
                       ),
                     ],
                   ),
                 ),
-                verticalSpaceMassive,
+                // SizedBox(
+                //   height: screenHeight(context) / 4,
+                //   width: double.infinity,
+                //   child: Stack(
+                //     children: [
+                // Positioned(
+                //   right: 0,
+                //   bottom: 0,
+                //   top: 0,
+                //   child: Container(
+                //     padding: EdgeInsets.all(10),
+                //     height: screenHeight(context) / 6,
+                //     width: screenWidth(context) / 1.7,
+                //     decoration: BoxDecoration(
+                //       color: Colors.white,
+                //       borderRadius: BorderRadius.circular(25),
+                //       boxShadow: [
+                //         BoxShadow(
+                //           color: AppColors.primaryColor.withOpacity(0.01),
+                //           blurRadius: 30.0,
+                //           offset: Offset(0, 10),
+                //         ),
+                //       ],
+                //     ),
+                //     alignment: Alignment.center,
+                //     child: ClipRRect(
+                //       borderRadius: BorderRadius.circular(25),
+                //       child: Hero(
+                //         tag: "meetweb",
+                //         child: Image.asset(
+                //           "images/meetweb.png",
+                //           width: screenWidth(context),
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                //       Column(
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         mainAxisAlignment: MainAxisAlignment.center,
+                //         children: [
+                //           Text(
+                //             "Create",
+                //             style: text22.copyWith(
+                //                 letterSpacing: -2,
+                //                 fontSize: 45.sp,
+                //                 fontWeight: FontWeight.w600,
+                //                 color: AppColors.primaryColor),
+                //           ),
+                //           Text(
+                //             "Meeting",
+                //             style: text22.copyWith(
+                //                 fontSize: 45.sp,
+                //                 fontWeight: FontWeight.w400,
+                //                 color: Colors.grey),
+                //           ),
+                //         ],
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                verticalSpaceLarge,
+                verticalSpaceLarge,
                 AnimatedContainer(
                   duration: Duration(milliseconds: 600),
                   curve: Curves.ease,
@@ -157,8 +222,8 @@ class _CreateMeetState extends State<CreateMeet> {
                   height: hei,
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.black38,
+                    borderRadius: borderR10,
                   ),
                   child: ListView(
                     children: [
@@ -167,16 +232,16 @@ class _CreateMeetState extends State<CreateMeet> {
                         children: [
                           Text(
                             "Code:",
-                            style: text30.copyWith(
-                              color: Colors.black,
+                            style: text22.copyWith(
+                              color: Colors.white70,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
                             code.isEmpty ? "_ _ _ _ _ _" : code,
                             style: text40.copyWith(
-                              letterSpacing: code.isEmpty ? 2 : 10,
-                              color: AppColors.primaryColor,
+                              letterSpacing: code.isEmpty ? 2 : 16,
+                              color: AppColors.backgroundColor,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -191,8 +256,13 @@ class _CreateMeetState extends State<CreateMeet> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                FlatButton(
-                                  minWidth: 50.w,
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    padding: padding10,
+                                    backgroundColor: Colors.black,
+                                    minimumSize: Size(50.w, 40),
+                                    shape: shape10,
+                                  ),
                                   onPressed: () {
                                     FlutterClipboard.copy(code).then((value) {
                                       var snackbar = SnackBar(
@@ -218,10 +288,6 @@ class _CreateMeetState extends State<CreateMeet> {
                                           .showSnackBar(snackbar);
                                     });
                                   },
-                                  color: Colors.black,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15)),
-                                  height: 40,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -239,16 +305,17 @@ class _CreateMeetState extends State<CreateMeet> {
                                     ],
                                   ),
                                 ),
-                                FlatButton(
-                                  minWidth: 50.w,
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    padding: padding10,
+                                    backgroundColor: Colors.black,
+                                    minimumSize: Size(50.w, 40),
+                                    shape: shape10,
+                                  ),
                                   onPressed: () async {
                                     await Share.share(
                                         'Hey, join me on Teamly meeting with this code - $code  \n\n Download Teamly: $appLink');
                                   },
-                                  color: Colors.black,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15)),
-                                  height: 40,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -273,25 +340,17 @@ class _CreateMeetState extends State<CreateMeet> {
                     ],
                   ),
                 ),
-                verticalSpaceMedium30,
+                verticalSpaceLarge,
                 Center(
-                  child: FlatButton(
-                    minWidth: screenWidth(context) / 1.5,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25)),
-                    padding: EdgeInsets.all(10.h),
-                    color: AppColors.primaryColor,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: AppColors.secondaryColor,
+                      minimumSize: Size(screenWidth(context) / 1.8, 0),
+                      shape: shape10,
+                      padding: EdgeInsets.all(10.h),
+                    ),
                     onPressed: () async {
-                      if (!pressed) {
-                        setState(() {
-                          code = Uuid().v1().substring(0, 6);
-                          pressed = true;
-                          opac = 1;
-                          hei = 150;
-                        });
-                      } else {
-                        await joinMeet();
-                      }
+                      await joinMeet();
                     },
                     child: Text(
                       pressed ? "Join Now" : "Create Code",
@@ -302,54 +361,15 @@ class _CreateMeetState extends State<CreateMeet> {
                     ),
                   ),
                 ),
-                if (pressed) verticalSpaceMedium15,
+                if (pressed) verticalSpaceMedium25,
                 if (pressed)
                   Text(
                     "By default, your audio and video will be muted but you can turn them ON anytime.",
                     textAlign: TextAlign.center,
-                    style: text14.copyWith(color: Colors.grey[600]),
+                    style: text14.copyWith(color: Colors.white70),
                   )
               ],
             ),
-            Positioned(
-              bottom: 20.h,
-              left: 10.w,
-              right: 10.w,
-              child: Container(
-                padding: EdgeInsets.all(10.h),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.primaryColor.withOpacity(0.1),
-                      blurRadius: 30.0,
-                      offset: Offset(0, 10),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Icon(
-                        Icons.info_rounded,
-                        color: AppColors.primaryColor,
-                      ),
-                    ),
-                    Expanded(
-                      flex: 5,
-                      child: Text(
-                        "Create a code and share it for others to join your meeting.",
-                        style: text18.copyWith(color: Colors.grey[600]),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            )
           ],
         ),
       ),

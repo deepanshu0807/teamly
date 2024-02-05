@@ -5,30 +5,49 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_team/screens/splashscreen.dart';
 import 'package:my_team/utils/colors.dart';
 
+import 'screens/login_screen.dart';
+
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.white,
+      statusBarColor: AppColors.secondaryColor,
       statusBarIconBrightness: Brightness.dark,
       statusBarBrightness: Brightness.dark,
-      systemNavigationBarColor: AppColors.primaryColor));
+      systemNavigationBarColor: AppColors.secondaryColor));
 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await ScreenUtil.ensureScreenSize();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        ScreenUtil.init(constraints, designSize: const Size(375, 812));
-        return MaterialApp(
-          title: 'Teamly',
-          debugShowCheckedModeBanner: false,
-          home: SplashScreen(),
-        );
-      },
+    return new MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: AppHome(),
     );
+  }
+}
+
+//Navigator context was facing issue, separating this class from MyApp to fix for the time being
+class AppHome extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // return LayoutBuilder(
+    //   builder: (context, constraints) {
+    //     ScreenUtil.init(context, designSize: const Size(375, 812));
+    return MaterialApp(
+        builder: (ctx, child) {
+          ScreenUtil.init(ctx, designSize: const Size(375, 812));
+          return Theme(
+            data: ThemeData(),
+            child: SplashScreen(),
+          );
+        },
+        title: 'Teamly',
+        debugShowCheckedModeBanner: false);
+    //     },
+    //   );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_team/utils/colors.dart';
+import 'package:my_team/utils/space.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
 
 class SnakeButton extends StatefulWidget {
@@ -11,14 +12,12 @@ class SnakeButton extends StatefulWidget {
   final double borderWidth;
 
   const SnakeButton(
-      {Key key,
-      this.onPressed,
+      {required this.onPressed,
       this.duration = const Duration(milliseconds: 2500),
       this.borderColor = Colors.white,
       this.snakeColor = AppColors.primaryColor,
       this.borderWidth = 3.0,
-      this.child})
-      : super(key: key);
+      required this.child});
 
   @override
   _SnakeButtonState createState() => _SnakeButtonState();
@@ -26,7 +25,7 @@ class SnakeButton extends StatefulWidget {
 
 class _SnakeButtonState extends State<SnakeButton>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
+  late AnimationController _controller;
 
   @override
   void initState() {
@@ -51,6 +50,7 @@ class _SnakeButtonState extends State<SnakeButton>
         ),
         child: Container(
           alignment: Alignment.center,
+          width: screenWidth(context) / 2,
           height: MediaQuery.of(context).size.height * .056,
           child: widget.child,
         ),
@@ -66,7 +66,7 @@ class _SnakePainter extends CustomPainter {
   final double borderWidth;
 
   _SnakePainter({
-    @required this.animation,
+    required this.animation,
     this.snakeColor = AppColors.primaryColor,
     this.borderColor = Colors.white,
     this.borderWidth = 3.0,
@@ -97,7 +97,7 @@ class _SnakePainter extends CustomPainter {
           startAngle: 0.0,
           endAngle: vector.radians(90),
           transform: GradientRotation(
-            vector.radians(360 * animation.value),
+            vector.radians((360 * animation.value).toDouble()),
           )).createShader(rectBorder);
 
     canvas.drawPath(

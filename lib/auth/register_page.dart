@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:my_team/screens/homepage.dart';
 import 'package:my_team/services/auth-exception-handler.dart';
 import 'package:my_team/services/auth-result-status.dart';
@@ -11,6 +12,8 @@ import 'package:my_team/widgets/inverted_top_border.dart';
 import 'package:my_team/widgets/snackbar.dart';
 import 'package:my_team/widgets/text_input_find_out.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
+
+import '../widgets/snake_button.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -60,7 +63,7 @@ class _RegisterPageState extends State<RegisterPage> {
       backgroundColor: Colors.transparent,
       body: GestureDetector(
         onVerticalDragUpdate: (details) {
-          if (details.primaryDelta > 10) {
+          if (details.primaryDelta! > 10) {
             resizeNotifier.value = false;
             Navigator.pop(context);
           }
@@ -70,13 +73,14 @@ class _RegisterPageState extends State<RegisterPage> {
             ValueListenableBuilder(
               valueListenable: resizeNotifier,
               builder: (context, value, child) {
+                value as bool;
                 return AnimatedPositioned(
                   duration: const Duration(milliseconds: 600),
                   curve: Curves.fastOutSlowIn,
                   bottom: value ? 0 : -size.height * .5,
                   left: 0,
                   right: 0,
-                  child: child,
+                  child: child!,
                 );
               },
               child: SizedBox(
@@ -137,24 +141,40 @@ class _RegisterPageState extends State<RegisterPage> {
                                         TextInputType.visiblePassword,
                                   ),
                                   verticalSpaceMedium30,
-                                  SizedBox(
-                                    width: size.width * .65,
-                                    child: RoundedLoadingButton(
-                                      borderRadius: 5,
-                                      successColor: Colors.green,
-                                      errorColor: Colors.red,
-                                      color: AppColors.primaryColor,
-                                      child: Text(
-                                        "Create Account",
-                                        style: text22.copyWith(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                  SnakeButton(
+                                    borderColor: Colors.black,
+                                    onPressed: () {
+                                      _registerUser();
+                                    },
+                                    child: Text(
+                                      'Signup',
+                                      style: GoogleFonts.dmSerifDisplay(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w700,
+                                        color: AppColors.primaryColor,
+                                        decorationStyle:
+                                            TextDecorationStyle.wavy,
                                       ),
-                                      controller: _btnController,
-                                      onPressed: () => _registerUser(),
                                     ),
-                                  )
+                                  ),
+                                  // SizedBox(
+                                  //   width: size.width * .65,
+                                  //   child: RoundedLoadingButton(
+                                  //     borderRadius: 5,
+                                  //     successColor: Colors.green,
+                                  //     errorColor: Colors.red,
+                                  //     color: AppColors.primaryColor,
+                                  //     child: Text(
+                                  //       "Create Account",
+                                  //       style: text22.copyWith(
+                                  //         color: Colors.white,
+                                  //         fontWeight: FontWeight.bold,
+                                  //       ),
+                                  //     ),
+                                  //     controller: _btnController,
+                                  //     onPressed: () => _registerUser(),
+                                  //   ),
+                                  // )
                                 ],
                               ),
                             ),
@@ -174,24 +194,20 @@ class _RegisterPageState extends State<RegisterPage> {
 }
 
 class _DragDownIndication extends StatelessWidget {
-  const _DragDownIndication({
-    Key key,
-  }) : super(key: key);
+  const _DragDownIndication();
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text('Register',
-            style: text30.copyWith(
+        Text('Create an account',
+            style: text60Italiana.copyWith(
+              fontSize: 35.sp,
               color: Colors.white,
               fontWeight: FontWeight.bold,
             )),
-        Text(
-          'Drag to close',
-          style: TextStyle(
-              height: 2, fontSize: 14, color: Colors.white.withOpacity(.9)),
-        ),
+        verticalSpaceSmall,
+        verticalSpaceSmall,
         Icon(
           Icons.keyboard_arrow_down,
           color: Colors.white.withOpacity(.8),

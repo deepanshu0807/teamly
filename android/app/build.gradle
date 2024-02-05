@@ -33,7 +33,7 @@ def keystoreProperties = new Properties()
    }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 33
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -64,7 +64,7 @@ android {
 
 
             minifyEnabled true
-            useProguard true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     
         }

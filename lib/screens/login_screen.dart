@@ -1,10 +1,10 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_utility/constant_utility.dart';
 import 'package:my_team/auth/login_page.dart';
 import 'package:my_team/auth/register_page.dart';
-import 'package:my_team/utils/colors.dart';
-import 'package:my_team/utils/textstyles.dart';
+import 'package:my_team/screens/testHomeAnim.dart';
 import 'package:my_team/utils/utility.dart';
 import 'package:my_team/widgets/animated_background.dart';
 import 'package:my_team/widgets/rectangular_button.dart';
@@ -29,12 +29,14 @@ class _LoginScreenState extends State<LoginScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           AnimatedOpacity(
-              duration: Duration(milliseconds: 600),
-              opacity: opacTrue ? 0.8 : 1,
-              child: AnimatedBackground()),
+            duration: Duration(milliseconds: 600),
+            opacity: opacTrue ? 0.8 : 1,
+            child: AnimatedBackground(),
+          ),
           ValueListenableBuilder(
             valueListenable: hideNotifier,
             builder: (context, value, child) {
+              value as bool;
               return AnimatedPositioned(
                 duration: const Duration(milliseconds: 600),
                 curve: Curves.fastOutSlowIn,
@@ -50,78 +52,107 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               );
             },
-            child: Center(
-              child: Container(
-                height: size.height * .75,
-                width: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      verticalSpaceMassive,
-                      verticalSpaceMassive,
-                      Text(
-                        'Teamly',
-                        style: text60.copyWith(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        'Meetings on the Go',
-                        textAlign: TextAlign.center,
-                        style: text30.copyWith(
-                            color: Colors.white.withOpacity(.5)),
-                      ),
-                      const Spacer(flex: 5),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: SnakeButton(
-                              onPressed: () => _openPage(context, LoginPage()),
-                              child: Text(
-                                'Login',
-                                style: text18.copyWith(color: Colors.white),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 30),
-                          Expanded(
-                            child: RectangularButton(
-                              onPressed: () =>
-                                  _openPage(context, RegisterPage()),
-                              label: 'Register',
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
+            child: Column(
+              crossAxisAlignment: crossS,
+              children: <Widget>[
+                verticalSpaceMassive,
+                verticalSpaceMassive,
+                verticalSpaceMassive,
+                verticalSpaceMassive,
+                Center(
+                  child: Text(
+                    'Teamly',
+                    style: text60Italiana.copyWith(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
-              ),
+                Center(
+                  child: Text(
+                    'Meetings on-the-Go',
+                    textAlign: TextAlign.center,
+                    style: text60Pacifico.copyWith(
+                      color: Colors.white.withOpacity(.5),
+                      fontSize: 30.sp,
+                    ),
+                  ),
+                ),
+                const Spacer(flex: 1),
+                verticalSpaceMedium30,
+                Center(
+                  child: SizedBox(
+                    height: screenHeight(context) / 6,
+                    child: Column(
+                      children: [
+                        Builder(builder: (context) {
+                          return SnakeButton(
+                            borderColor: Colors.white,
+                            onPressed: () async {
+                              setState(() {
+                                opacTrue = !opacTrue;
+                                hideNotifier.value = true;
+                              });
+
+                              await Navigator.of(context).push(PageRouteBuilder(
+                                opaque: false,
+                                transitionDuration:
+                                    const Duration(milliseconds: 500),
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) {
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: LoginPage(),
+                                  );
+                                },
+                              ));
+
+                              setState(() {
+                                hideNotifier.value = false;
+                                opacTrue = !opacTrue;
+                              });
+                            },
+                            child: Text(
+                              'Login',
+                              style: text18.copyWith(color: Colors.white),
+                            ),
+                          );
+                        }),
+                        verticalSpaceMedium20,
+                        RectangularButton(
+                          onPressed: () async {
+                            setState(() {
+                              opacTrue = !opacTrue;
+                              hideNotifier.value = true;
+                            });
+
+                            await Navigator.of(context).push(PageRouteBuilder(
+                              opaque: false,
+                              transitionDuration:
+                                  const Duration(milliseconds: 500),
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: RegisterPage(),
+                                );
+                              },
+                            ));
+
+                            setState(() {
+                              hideNotifier.value = false;
+                              opacTrue = !opacTrue;
+                            });
+                          },
+                          label: 'Create a new account',
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
             ),
           )
         ],
       ),
     );
-  }
-
-  void _openPage(BuildContext context, Widget page) async {
-    setState(() {
-      opacTrue = !opacTrue;
-    });
-    hideNotifier.value = true;
-    await Navigator.push(
-        context,
-        PageRouteBuilder(
-          opaque: false,
-          transitionDuration: const Duration(milliseconds: 500),
-          pageBuilder: (context, animation, secondaryAnimation) {
-            return FadeTransition(opacity: animation, child: page);
-          },
-        ));
-    hideNotifier.value = false;
-    setState(() {
-      opacTrue = !opacTrue;
-    });
   }
 }

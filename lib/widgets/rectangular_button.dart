@@ -3,26 +3,32 @@ import 'package:my_team/utils/textstyles.dart';
 
 class RectangularButton extends StatelessWidget {
   const RectangularButton({
-    Key key,
-    @required this.label,
-    @required this.onPressed,
-  }) : super(key: key);
+    required this.label,
+    required this.onPressed,
+  });
   final String label;
   final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
+    final ButtonStyle flatButtonStyle = TextButton.styleFrom(
+      backgroundColor: Colors.transparent,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(2)),
+      ),
+    );
+
     return SizedBox(
       height: MediaQuery.of(context).size.height * .056,
-      child: FlatButton(
+      child: TextButton(
         onPressed: onPressed,
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        shape: RoundedRectangleBorder(
-            side: BorderSide(color: Colors.white, width: 3)),
+        style: flatButtonStyle,
         child: Text(
           label,
-          style: text18.copyWith(color: Colors.white),
+          style: text14.copyWith(
+            color: Colors.white70,
+            decoration: TextDecoration.underline,
+          ),
         ),
       ),
     );
