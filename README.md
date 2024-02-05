@@ -1,6 +1,6 @@
-# my_team
+# Teamly - Meetings on-the-go
 
-A new Flutter project.
+Video conferencing app made with flutter
 
 ## Getting Started
 
