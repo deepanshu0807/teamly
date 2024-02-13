@@ -3,12 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
 import 'package:flutter_utility/constant_utility.dart';
-import 'package:meet_hour/meet_hour.dart';
+// import 'package:meet_hour/meet_hour.dart';
 // import 'package:jitsi_meet/jitsi_meet.dart';
 import 'package:my_team/utils/utility.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
-
-import '../widgets/text_input_find_out.dart';
 
 class JoinMeet extends StatefulWidget {
   final String username;
@@ -33,28 +31,28 @@ class _JoinMeetState extends State<JoinMeet> {
   }
 
   joinMeet() async {
-    try {
-      Map<FeatureFlagEnum, bool> featureFlags = {
-        FeatureFlagEnum.WELCOME_PAGE_ENABLED: false,
-        FeatureFlagEnum.ADD_PEOPLE_ENABLED: false,
-        FeatureFlagEnum.INVITE_ENABLED: false
-      };
-      if (Platform.isAndroid) {
-        featureFlags[FeatureFlagEnum.CALL_INTEGRATION_ENABLED] = false;
-      } else if (Platform.isIOS) {
-        featureFlags[FeatureFlagEnum.PIP_ENABLED] = false;
-      }
+    // try {
+    //   Map<FeatureFlagEnum, bool> featureFlags = {
+    //     FeatureFlagEnum.WELCOME_PAGE_ENABLED: false,
+    //     FeatureFlagEnum.ADD_PEOPLE_ENABLED: false,
+    //     FeatureFlagEnum.INVITE_ENABLED: false
+    //   };
+    //   if (Platform.isAndroid) {
+    //     featureFlags[FeatureFlagEnum.CALL_INTEGRATION_ENABLED] = false;
+    //   } else if (Platform.isIOS) {
+    //     featureFlags[FeatureFlagEnum.PIP_ENABLED] = false;
+    //   }
 
-      var options = MeetHourMeetingOptions(room: controller.text)
-        ..userDisplayName = nameC.text.isEmpty ? widget.username : nameC.text
-        ..audioMuted = !_controller2.value
-        ..videoMuted = !_controller1.value
-        ..featureFlags.addAll(featureFlags);
+    //   var options = MeetHourMeetingOptions(room: controller.text)
+    //     ..userDisplayName = nameC.text.isEmpty ? widget.username : nameC.text
+    //     ..audioMuted = !_controller2.value
+    //     ..videoMuted = !_controller1.value
+    //     ..featureFlags.addAll(featureFlags);
 
-      await MeetHour.joinMeeting(options);
-    } catch (e) {
-      print("Error: $e");
-    }
+    //   await MeetHour.joinMeeting(options);
+    // } catch (e) {
+    //   print("Error: $e");
+    // }
   }
 
   @override

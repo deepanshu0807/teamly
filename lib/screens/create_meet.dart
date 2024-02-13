@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_utility/constant_utility.dart';
-import 'package:meet_hour/meet_hour.dart';
-import 'package:meet_hour/meet_hour_platform_interface.dart';
-// import 'package:jitsi_meet/jitsi_meet.dart';
+import 'package:jitsi_meet_flutter_sdk/jitsi_meet_flutter_sdk.dart';
+// import 'package:meet_hour/meet_hour.dart';
+// import 'package:meet_hour/meet_hour_platform_interface.dart';
 import 'package:my_team/utils/utility.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:uuid/uuid.dart';
@@ -27,7 +27,7 @@ class _CreateMeetState extends State<CreateMeet> {
 
   double hei = 75;
 
-  // final jitsiMeet = JitsiMeet();
+  final jitsiMeet = JitsiMeet();
 
   @override
   void initState() {
@@ -40,30 +40,35 @@ class _CreateMeetState extends State<CreateMeet> {
     super.initState();
   }
 
-  joinMeet() async {
-    try {
-      Map<FeatureFlagEnum, bool> featureFlags = {
-        FeatureFlagEnum.WELCOME_PAGE_ENABLED: false,
-        FeatureFlagEnum.ADD_PEOPLE_ENABLED: false,
-        FeatureFlagEnum.INVITE_ENABLED: false
-      };
-      if (Platform.isAndroid) {
-        featureFlags[FeatureFlagEnum.CALL_INTEGRATION_ENABLED] = false;
-      } else if (Platform.isIOS) {
-        featureFlags[FeatureFlagEnum.PIP_ENABLED] = false;
-      }
-
-      var options = MeetHourMeetingOptions(room: code)
-        ..userDisplayName = widget.username
-        ..audioMuted = true
-        ..videoMuted = true
-        ..featureFlags.addAll(featureFlags);
-
-      await MeetHour.joinMeeting(options);
-    } catch (e) {
-      print("Error: $e");
-    }
+  void join() {
+    var options = JitsiMeetConferenceOptions(room: code);
+    jitsiMeet.join(options);
   }
+
+  // joinMeet() async {
+  //   try {
+  //     Map<FeatureFlagEnum, bool> featureFlags = {
+  //       FeatureFlagEnum.WELCOME_PAGE_ENABLED: false,
+  //       FeatureFlagEnum.ADD_PEOPLE_ENABLED: false,
+  //       FeatureFlagEnum.INVITE_ENABLED: false
+  //     };
+  //     if (Platform.isAndroid) {
+  //       featureFlags[FeatureFlagEnum.CALL_INTEGRATION_ENABLED] = false;
+  //     } else if (Platform.isIOS) {
+  //       featureFlags[FeatureFlagEnum.PIP_ENABLED] = false;
+  //     }
+
+  //     var options = MeetHourMeetingOptions(room: code)
+  //       ..userDisplayName = widget.username
+  //       ..audioMuted = true
+  //       ..videoMuted = true
+  //       ..featureFlags.addAll(featureFlags);
+
+  //     await MeetHour.joinMeeting(options);
+  //   } catch (e) {
+  //     print("Error: $e");
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -350,7 +355,8 @@ class _CreateMeetState extends State<CreateMeet> {
                       padding: EdgeInsets.all(10.h),
                     ),
                     onPressed: () async {
-                      await joinMeet();
+                      // await joinMeet();
+                      join();
                     },
                     child: Text(
                       pressed ? "Join Now" : "Create Code",

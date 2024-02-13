@@ -5,8 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_team/screens/splashscreen.dart';
 import 'package:my_team/utils/colors.dart';
 
-import 'screens/login_screen.dart';
-
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: AppColors.secondaryColor,

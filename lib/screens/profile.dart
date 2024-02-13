@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_utility/constant_utility.dart';
 import 'package:my_team/auth/navigator.dart';
 import 'package:my_team/utils/utility.dart';
 import 'package:my_team/utils/variables.dart';
@@ -52,7 +53,7 @@ class _ProfileScreenState extends State<ProfileScreen>
       backgroundColor: Colors.transparent,
       body: ClipRect(
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
+          filter: ImageFilter.blur(sigmaX: 12.0, sigmaY: 12.0),
           child: Container(
             color: Colors.transparent,
             height: screenHeight(context),
@@ -62,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               children: [
                 if (loading)
                   Positioned(
-                    top: 40.h,
+                    top: 70.h,
                     right: 20.h,
                     child: SizedBox(
                       height: 50.h,
@@ -77,29 +78,22 @@ class _ProfileScreenState extends State<ProfileScreen>
                 ListView(
                   physics: BouncingScrollPhysics(),
                   children: [
-                    verticalSpaceMassive,
+                    verticalSpaceLarge,
                     Hero(
                       tag: 'icon',
                       child: Icon(
                         Icons.account_circle_sharp,
                         size: 150.sp,
-                        color: AppColors.primaryColor,
+                        color: Colors.white70,
                       ),
                     ),
                     verticalSpaceLarge,
                     Container(
                       width: double.infinity,
-                      margin: EdgeInsets.symmetric(horizontal: 30.w),
+                      margin: EdgeInsets.symmetric(horizontal: 20.w),
                       decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(25),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.primaryColor.withOpacity(0.1),
-                            blurRadius: 30.0,
-                            offset: Offset(0, 10),
-                          ),
-                        ],
+                        color: AppColors.secondaryColor,
+                        borderRadius: borderR10,
                       ),
                       padding: EdgeInsets.symmetric(
                           vertical: 15.h, horizontal: 20.w),
@@ -107,36 +101,30 @@ class _ProfileScreenState extends State<ProfileScreen>
                         children: [
                           Text(
                             "You are signed in as",
-                            style: text20.copyWith(color: Colors.white),
+                            style: text16.copyWith(color: Colors.white),
                           ),
                           verticalSpaceMedium15,
                           Text(
                             name.isEmpty ? "..." : name,
-                            maxLines: 2,
+                            maxLines: 1,
                             textAlign: TextAlign.center,
                             overflow: TextOverflow.ellipsis,
                             style: text20.copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 28.sp),
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24.sp,
+                            ),
                           ),
                         ],
                       ),
                     ),
-                    verticalSpaceMedium20,
+                    verticalSpaceMedium30,
                     Container(
                       width: double.infinity,
-                      margin: EdgeInsets.symmetric(horizontal: 30.w),
+                      margin: EdgeInsets.symmetric(horizontal: 20.w),
                       decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(25),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.primaryColor.withOpacity(0.1),
-                            blurRadius: 30.0,
-                            offset: Offset(0, 10),
-                          ),
-                        ],
+                        color: AppColors.secondaryColor,
+                        borderRadius: borderR10,
                       ),
                       padding: EdgeInsets.symmetric(
                           vertical: 15.h, horizontal: 20.w),
@@ -144,18 +132,19 @@ class _ProfileScreenState extends State<ProfileScreen>
                         children: [
                           Text(
                             "Your email address is",
-                            style: text20.copyWith(color: Colors.white),
+                            style: text16.copyWith(color: Colors.white),
                           ),
                           verticalSpaceMedium15,
                           Text(
                             email.isEmpty ? "..." : email,
                             overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
+                            maxLines: 1,
                             textAlign: TextAlign.center,
                             style: text20.copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 24.sp),
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 22.sp,
+                            ),
                           ),
                         ],
                       ),
@@ -166,9 +155,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                   bottom: 20.h,
                   child: TextButton(
                     style: TextButton.styleFrom(
-                      fixedSize: Size(screenWidth(context) / 2, 60.h),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30)),
+                      fixedSize: Size(screenWidth(context) / 2.5, 40.h),
+                      shape: RoundedRectangleBorder(borderRadius: borderR10),
                       backgroundColor: Colors.black,
                     ),
                     onPressed: () {
@@ -190,7 +178,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         horizontalSpaceMedium15,
                         Text(
                           "Logout",
-                          style: text22.copyWith(color: Colors.white),
+                          style: text18.copyWith(color: Colors.white),
                         )
                       ],
                     ),
@@ -204,7 +192,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                     child: Image.asset(
                       "images/back.png",
                       width: 50.w,
-                      color: AppColors.primaryColor,
+                      color: AppColors.backgroundColor,
                     ),
                   ),
                 ),
@@ -215,17 +203,10 @@ class _ProfileScreenState extends State<ProfileScreen>
                     duration: Duration(milliseconds: 200),
                     height: hei,
                     width: wid,
-                    padding: EdgeInsets.fromLTRB(20.w, 0.h, 20.w, 0),
+                    padding: EdgeInsets.fromLTRB(8.w, 0.h, 8.w, 0),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(35),
+                      borderRadius: borderR10,
                       color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.primaryColor.withOpacity(0.6),
-                          blurRadius: 30.0,
-                          offset: Offset(0, 10),
-                        ),
-                      ],
                     ),
                     child: Stack(
                       alignment: Alignment.topCenter,
@@ -239,65 +220,89 @@ class _ProfileScreenState extends State<ProfileScreen>
                               if (animplaying)
                                 Row(
                                   children: [
+                                    horizontalSpaceMedium15,
                                     Icon(
                                       Icons.edit,
-                                      size: 35,
+                                      size: 30.h,
                                     ),
                                     horizontalSpaceMedium15,
                                     Text(
                                       "Edit ",
                                       style: text22.copyWith(
-                                          fontSize: 28.sp,
-                                          fontWeight: FontWeight.bold),
+                                        fontSize: 24.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.secondaryColor,
+                                      ),
                                     )
                                   ],
                                 ),
                               verticalSpaceMedium20,
                               if (animplaying)
-                                Text(
-                                  "We will use this username in meetings if you don't provide a custom name while joining the meeting.",
-                                  style: text18,
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 5.h,
+                                    horizontal: 15.w,
+                                  ),
+                                  child: Text(
+                                    "We will use this username in meetings if you don't provide a custom name while joining the meeting.",
+                                    style: text16.copyWith(
+                                      color: AppColors.secondaryColor,
+                                    ),
+                                  ),
                                 ),
                               verticalSpaceMedium15,
-                              Divider(
-                                color: Colors.grey,
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 5.h,
+                                  horizontal: 15.w,
+                                ),
+                                child: Divider(
+                                  color: Colors.grey,
+                                ),
                               ),
-                              verticalSpaceMedium30,
+                              verticalSpaceMedium15,
                               if (animplaying)
                                 Container(
-                                  height: 55,
+                                  margin: EdgeInsets.symmetric(
+                                    vertical: 0,
+                                    horizontal: 15.w,
+                                  ),
+                                  height: 55.h,
                                   child: TextFormField(
                                     controller: nameC,
                                     cursorColor: AppColors.getPrimaryColor(),
                                     style: text22.copyWith(
                                       color: AppColors.getPrimaryColor(),
-                                      fontSize: 28.sp,
+                                      fontSize: 25.sp,
                                     ),
                                     decoration: InputDecoration(
-                                        hintText: name,
-                                        hintStyle: text22.copyWith(
-                                          color: Colors.grey,
-                                        ),
-                                        fillColor: AppColors.backgroundColor,
-                                        filled: true,
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide.none,
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                        )),
+                                      hintText: name,
+                                      hintStyle: text20.copyWith(
+                                        color: Colors.grey,
+                                      ),
+                                      fillColor: AppColors.backgroundColor,
+                                      filled: true,
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                    ),
                                     onChanged: (value) {},
                                   ),
                                 ),
-                              verticalSpaceMedium20,
+                              verticalSpaceMedium15,
                               if (animplaying)
                                 Center(
                                   child: TextButton(
                                     style: TextButton.styleFrom(
                                       shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(25)),
-                                      padding: EdgeInsets.all(10.h),
-                                      backgroundColor: AppColors.primaryColor,
+                                        borderRadius: borderR10,
+                                      ),
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 10.h,
+                                        horizontal: 30.w,
+                                      ),
+                                      backgroundColor: AppColors.secondaryColor,
                                     ),
                                     onPressed: () {
                                       setState(() {
@@ -327,7 +332,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     },
                                     child: Text(
                                       "Save",
-                                      style: text22.copyWith(
+                                      style: text20.copyWith(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -354,7 +359,10 @@ class _ProfileScreenState extends State<ProfileScreen>
                                       : 60;
                                 });
                               },
-                              child: Icon(Icons.close),
+                              child: Icon(
+                                Icons.close,
+                                size: 30.h,
+                              ),
                             ),
                           ),
                         Positioned(
@@ -364,7 +372,10 @@ class _ProfileScreenState extends State<ProfileScreen>
                             opacity: opac,
                             child: IconButton(
                               splashColor: AppColors.primaryColor,
-                              icon: Icon(Icons.edit),
+                              icon: Icon(
+                                Icons.edit,
+                                size: 30.h,
+                              ),
                               onPressed: () {
                                 setState(() {
                                   animplaying = !animplaying;

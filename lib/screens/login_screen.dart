@@ -1,10 +1,7 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_utility/constant_utility.dart';
 import 'package:my_team/auth/login_page.dart';
 import 'package:my_team/auth/register_page.dart';
-import 'package:my_team/screens/testHomeAnim.dart';
 import 'package:my_team/utils/utility.dart';
 import 'package:my_team/widgets/animated_background.dart';
 import 'package:my_team/widgets/rectangular_button.dart';
@@ -22,7 +19,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
