@@ -22,7 +22,7 @@ class _CreateMeetState extends State<CreateMeet> {
   String code = '';
   double opac = 0;
   bool pressed = false;
-  double hei = 75;
+  double hei = 80;
 
   @override
   void initState() {
