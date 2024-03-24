@@ -14,7 +14,9 @@ generateErrorMessage(String text) {
           horizontalSpaceMedium15,
           Text(
             text,
-            style: text18.copyWith(color: Colors.white),
+            style: text18.copyWith(
+              color: Colors.white,
+            ),
           ),
         ],
       ));

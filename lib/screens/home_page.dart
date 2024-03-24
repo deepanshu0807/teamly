@@ -4,9 +4,7 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_utility/constant_utility.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:my_team/screens/profile.dart';
 import 'package:my_team/utils/utility.dart';
 
@@ -14,15 +12,14 @@ import '../utils/variables.dart';
 import 'create_meet.dart';
 import 'join_meet.dart';
 
-class TestHomeAnimated extends StatefulWidget {
-  const TestHomeAnimated({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<TestHomeAnimated> createState() => _TestHomeAnimatedState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _TestHomeAnimatedState extends State<TestHomeAnimated>
-    with TickerProviderStateMixin {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late AnimationController controller1;
   late AnimationController controller2;
   late Animation<double> animation1;
@@ -169,23 +166,6 @@ class _TestHomeAnimatedState extends State<TestHomeAnimated>
                 painter: MyPainter(animation4.value),
               ),
             ),
-            // Positioned(
-            //   bottom: -30,
-            //   left: 0,
-            //   right: 0,
-            //   child: Opacity(
-            //     opacity: 0.4,
-            //     child: ClipRRect(
-            //       borderRadius: BorderRadius.only(
-            //           topLeft: Radius.circular(200),
-            //           topRight: Radius.circular(200)),
-            //       child: Image.asset(
-            //         "images/meet.png",
-            //         width: screenWidth(context),
-            //       ),
-            //     ),
-            //   ),
-            // ),
             ListView(
               physics: BouncingScrollPhysics(),
               children: [
@@ -250,16 +230,6 @@ class _TestHomeAnimatedState extends State<TestHomeAnimated>
                   ),
                 ),
                 verticalSpaceMedium20,
-                // Center(
-                //   child: Container(
-                //     height: 5.h,
-                //     width: screenWidth(context) / 1.3,
-                //     decoration: BoxDecoration(
-                //         color: Colors.grey,
-                //         borderRadius: BorderRadius.circular(40)),
-                //   ),
-                // ),
-                verticalSpaceMedium30,
                 Padding(
                   padding: padding15,
                   child: ClipRRect(
@@ -311,13 +281,6 @@ class _TestHomeAnimatedState extends State<TestHomeAnimated>
                                   ),
                                 ],
                               ),
-                              // Hero(
-                              //   tag: "connect",
-                              //   child: Image.asset(
-                              //     "images/connect.png",
-                              //     width: screenWidth(context) / 3,
-                              //   ),
-                              // ),
                             ],
                           ),
                         ),
@@ -325,14 +288,6 @@ class _TestHomeAnimatedState extends State<TestHomeAnimated>
                     ),
                   ),
                 ),
-                // verticalSpaceMedium30,
-                // Center(
-                //   child: Text(
-                //     "OR",
-                //     style: text30.copyWith(color: Colors.grey),
-                //   ),
-                // ),
-                // verticalSpaceMedium30,
                 Padding(
                   padding: padding15,
                   child: ClipRRect(
@@ -384,13 +339,6 @@ class _TestHomeAnimatedState extends State<TestHomeAnimated>
                                   ),
                                 ],
                               ),
-                              //       Hero(
-                              //   tag: "meetweb",
-                              //   child: Image.asset(
-                              //     "images/meetweb.png",
-                              //     width: screenWidth(context) / 3,
-                              //   ),
-                              // ),
                             ],
                           ),
                         ),
@@ -398,70 +346,100 @@ class _TestHomeAnimatedState extends State<TestHomeAnimated>
                     ),
                   ),
                 ),
-                // Container(
-                //   padding: EdgeInsets.all(20),
-                //   decoration: BoxDecoration(
-                //     borderRadius: BorderRadius.circular(20),
-                //     boxShadow: [
-                //       BoxShadow(
-                //         color: AppColors.primaryColor.withOpacity(0.1),
-                //         blurRadius: 30.0,
-                //         offset: Offset(0, 10),
-                //       ),
-                //     ],
-                //   ),
-                //   child: TextButton(
-                //     style: TextButton.styleFrom(
-                //         minimumSize: Size(double.infinity, 0),
-                //         padding:
-                //             EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                //         shape: RoundedRectangleBorder(
-                //             borderRadius: BorderRadius.circular(20)),
-                //         backgroundColor: Colors.white,
-                //         surfaceTintColor: AppColors.primaryColor),
-                //     onPressed: () {
-                //       Navigator.push(
-                //           context,
-                //           CupertinoPageRoute(
-                //               builder: (context) => CreateMeet(
-                //                     username: username,
-                //                   )));
-                //     },
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //       crossAxisAlignment: CrossAxisAlignment.center,
-                //       children: [
-                //         Column(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           mainAxisAlignment: MainAxisAlignment.center,
-                //           children: [
-                //             Text(
-                //               "Create",
-                //               style: text30.copyWith(
-                //                   color: AppColors.primaryColor,
-                //                   fontWeight: FontWeight.bold),
-                //             ),
-                //             verticalSpaceMedium20,
-                //             SizedBox(
-                //               width: screenWidth(context) / 2.8,
-                //               child: Text(
-                //                 "Create a meeting code and invite others",
-                //                 style: text18.copyWith(color: Colors.grey[700]),
-                //               ),
-                //             ),
-                //           ],
-                //         ),
-                //         Hero(
-                //           tag: "meetweb",
-                //           child: Image.asset(
-                //             "images/meetweb.png",
-                //             width: screenWidth(context) / 3,
-                //           ),
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
+                verticalSpaceMedium30,
+                Padding(
+                  padding: padding15,
+                  child: ClipRRect(
+                    borderRadius: borderR10,
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaY: 15, sigmaX: 15),
+                      child: InkWell(
+                        highlightColor: Colors.transparent,
+                        splashColor: Colors.white24,
+                        onTap: () {
+                          var snackbar = SnackBar(
+                              duration: Duration(seconds: 2),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 5.h, horizontal: 10.w),
+                              backgroundColor: Colors.black,
+                              content: Row(
+                                children: [
+                                  Icon(
+                                    Icons.emoji_emotions_sharp,
+                                    color: Colors.white,
+                                  ),
+                                  horizontalSpaceMedium15,
+                                  Text(
+                                    "Ruka nahi jaata ??",
+                                    style: text18.copyWith(color: Colors.white),
+                                  ),
+                                ],
+                              ));
+                          ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                        },
+                        child: Container(
+                          padding: padding15,
+                          width: screenWidth(context) / 2,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Colors.white12,
+                            borderRadius: borderR10,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Ask anything",
+                                        style: text30.copyWith(
+                                          color: Colors.white,
+                                          fontSize: 20.sp,
+                                        ),
+                                      ),
+                                      horizontalSpaceMedium15,
+                                      Container(
+                                        padding: padding5.copyWith(
+                                            left: 6, right: 6),
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: AppColors.secondaryColor,
+                                          borderRadius: borderR5,
+                                        ),
+                                        child: Text(
+                                          "Upcoming",
+                                          style: text30.copyWith(
+                                            color: Colors.white54,
+                                            fontSize: 13.sp,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  verticalSpaceSmall,
+                                  SizedBox(
+                                    width: screenWidth(context) / 1.4,
+                                    child: Text(
+                                      "AI powered quick answers",
+                                      style: text16.copyWith(
+                                          color: Colors.white70),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
                 verticalSpaceMedium30,
               ],
             ),
@@ -597,74 +575,3 @@ class MyBehavior extends ScrollBehavior {
     return child;
   }
 }
-
-
-
-// Positioned(
-//               top: 20.sp,
-//               child: Container(
-//                 padding: padding15,
-//                 margin: padding30,
-//                 height: screenHeight(context),
-//                 child: Column(
-//                   children: [
-//                     Text(
-//                       'Teamly',
-//                       style: text60Italiana.copyWith(
-//                         color: Colors.white,
-//                         fontWeight: FontWeight.bold,
-//                         fontSize: 45.sp,
-//                       ),
-//                     ),
-//                     verticalSpaceMedium15,
-//                     Text(
-//                       'Create a new account',
-//                       style: text60Italiana.copyWith(
-//                           color: Colors.white,
-//                           fontWeight: FontWeight.bold,
-//                           fontSize: 20.sp),
-//                     ),
-//                     verticalSpaceMassive,
-//                     blurredInputField(
-//                       Icons.account_circle_outlined,
-//                       'User name...',
-//                       false,
-//                       false,
-//                     ),
-//                     blurredInputField(
-//                       Icons.email_outlined,
-//                       'Email...',
-//                       false,
-//                       true,
-//                     ),
-//                     blurredInputField(
-//                       Icons.lock_outline,
-//                       'Password...',
-//                       true,
-//                       false,
-//                     ),
-//                     verticalSpaceMassive,
-//                     verticalSpaceLarge,
-//                     // SizedBox(
-//                     //   height: 70.h,
-//                     //   width: 70.h,
-//                     //   child: CircularProgressIndicator(
-//                     //     strokeWidth: 2,
-//                     //     color: Colors.white,
-//                     //     backgroundColor: Colors.black,
-//                     //   ),
-//                     // ),
-//                     blurredButton(
-//                       'Signup',
-//                       2,
-//                       () {
-//                         setState(() {
-//                           isLoading = true;
-//                         });
-//                         HapticFeedback.lightImpact();
-//                       },
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ),

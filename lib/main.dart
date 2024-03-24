@@ -32,9 +32,6 @@ class MyApp extends StatelessWidget {
 class AppHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // return LayoutBuilder(
-    //   builder: (context, constraints) {
-    //     ScreenUtil.init(context, designSize: const Size(375, 812));
     return MaterialApp(
         builder: (ctx, child) {
           ScreenUtil.init(ctx, designSize: const Size(375, 812));

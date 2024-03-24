@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_utility/flutter_utility.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_team/utils/utility.dart';
 
@@ -30,6 +29,7 @@ class TextInputFindOut extends StatelessWidget {
     return ValueListenableBuilder(
         valueListenable: hidePasswordNotifier,
         builder: (context, value, child) {
+          bool showPass = value as bool;
           return TextField(
             keyboardType: textInputType,
             style: GoogleFonts.dmSerifDisplay(
@@ -47,7 +47,7 @@ class TextInputFindOut extends StatelessWidget {
                       onPressed: () => hidePasswordNotifier.value =
                           !hidePasswordNotifier.value,
                       icon: Icon(
-                        (value as bool) //TODO
+                        hidePasswordNotifier.value
                             ? Icons.visibility
                             : Icons.visibility_off,
                         color: Colors.grey[700],
@@ -72,37 +72,6 @@ class TextInputFindOut extends StatelessWidget {
             ),
             controller: controller,
           );
-          // return TextField(
-          //   keyboardType: textInputType,
-          //   obscureText: isPassword,
-          //   style: text20.copyWith(fontSize: 20),
-          //   decoration: InputDecoration(
-          //     filled: true,
-          //     fillColor: Colors.white,
-          //     suffixIcon: isPassword
-          //         ? IconButton(
-          //             onPressed: () => hidePasswordNotifier.value =
-          //                 !hidePasswordNotifier.value,
-          //             icon: Icon(
-          //               (value as bool) //TODO
-          //                   ? Icons.visibility
-          //                   : Icons.visibility_off,
-          //               color: Colors.grey[700],
-          //             ),
-          //           )
-          //         : null,
-          //     enabledBorder: outlineInputBorder,
-          //     hintText: label,
-          //     focusedBorder: outlineInputBorder.copyWith(
-          //         borderSide:
-          //             BorderSide(color: AppColors.primaryColor, width: 2)),
-          //     hintStyle: TextStyle(color: Colors.grey),
-          //     prefixIcon:
-          //         Icon(iconData, color: AppColors.primaryColor, size: 18),
-          //   ),
-          //   controller: controller,
-          //   cursorColor: AppColors.primaryColor,
-          // );
         });
   }
 }

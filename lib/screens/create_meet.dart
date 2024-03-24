@@ -1,12 +1,12 @@
-import 'dart:io';
-
+import 'package:dart_jwt_token/dart_jwt_token.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:flutter_utility/constant_utility.dart';
-import 'package:jitsi_meet_flutter_sdk/jitsi_meet_flutter_sdk.dart';
-// import 'package:meet_hour/meet_hour.dart';
-// import 'package:meet_hour/meet_hour_platform_interface.dart';
+import 'package:my_team/screens/call_screen_get_stream.dart';
 import 'package:my_team/utils/utility.dart';
+import 'package:my_team/utils/variables.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:stream_video_flutter/stream_video_flutter.dart';
 import 'package:uuid/uuid.dart';
 import 'package:clipboard/clipboard.dart';
 
@@ -22,53 +22,83 @@ class _CreateMeetState extends State<CreateMeet> {
   String code = '';
   double opac = 0;
   bool pressed = false;
-  String appLink =
-      'https://play.google.com/store/apps/details?id=com.meetings.teamly';
-
   double hei = 75;
-
-  final jitsiMeet = JitsiMeet();
 
   @override
   void initState() {
     setState(() {
       code = Uuid().v1().substring(0, 6);
-      pressed = true;
       opac = 1;
       hei = 150;
     });
     super.initState();
   }
 
-  void join() {
-    var options = JitsiMeetConferenceOptions(room: code);
-    jitsiMeet.join(options);
+  createStreamClientAndConfigure() {
+    String createToken(
+        {required Map payload,
+        required Map<String, dynamic> headers,
+        required SecretKey key}) {
+      String token = "";
+      final jwt = JWT(payload, header: headers);
+      token = jwt.sign(key);
+      return token;
+    }
+
+    final client = StreamVideo(
+      getStreamKey,
+      user: User.regular(
+        userId: auth.FirebaseAuth.instance.currentUser!.uid,
+        role: 'admin',
+        name: widget.username,
+      ),
+      userToken: createToken(
+          payload: {"user_id": auth.FirebaseAuth.instance.currentUser!.uid},
+          headers: {'alg': 'HS256', 'typ': 'JWT'},
+          key: SecretKey(getStreamSecret)),
+    );
   }
 
-  // joinMeet() async {
-  //   try {
-  //     Map<FeatureFlagEnum, bool> featureFlags = {
-  //       FeatureFlagEnum.WELCOME_PAGE_ENABLED: false,
-  //       FeatureFlagEnum.ADD_PEOPLE_ENABLED: false,
-  //       FeatureFlagEnum.INVITE_ENABLED: false
-  //     };
-  //     if (Platform.isAndroid) {
-  //       featureFlags[FeatureFlagEnum.CALL_INTEGRATION_ENABLED] = false;
-  //     } else if (Platform.isIOS) {
-  //       featureFlags[FeatureFlagEnum.PIP_ENABLED] = false;
-  //     }
+  void join() async {
+    try {
+      setState(() {
+        pressed = true;
+      });
 
-  //     var options = MeetHourMeetingOptions(room: code)
-  //       ..userDisplayName = widget.username
-  //       ..audioMuted = true
-  //       ..videoMuted = true
-  //       ..featureFlags.addAll(featureFlags);
+      StreamVideo.reset();
+      createStreamClientAndConfigure();
 
-  //     await MeetHour.joinMeeting(options);
-  //   } catch (e) {
-  //     print("Error: $e");
-  //   }
-  // }
+      var call = StreamVideo.instance.makeCall(
+        type: 'default',
+        id: code,
+      );
+
+      await call.getOrCreate();
+
+      setState(() {
+        pressed = false;
+      });
+
+      await Navigator.of(context).push(PageRouteBuilder(
+        opaque: false,
+        transitionDuration: const Duration(milliseconds: 500),
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return FadeTransition(
+            opacity: animation,
+            child: CallScreenGetStream(
+              call: call,
+            ),
+          );
+        },
+      ));
+    } catch (e) {
+      setState(() {
+        pressed = false;
+      });
+      debugPrint('Error joining or creating call: $e');
+      debugPrint(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -157,69 +187,8 @@ class _CreateMeetState extends State<CreateMeet> {
                     ],
                   ),
                 ),
-                // SizedBox(
-                //   height: screenHeight(context) / 4,
-                //   width: double.infinity,
-                //   child: Stack(
-                //     children: [
-                // Positioned(
-                //   right: 0,
-                //   bottom: 0,
-                //   top: 0,
-                //   child: Container(
-                //     padding: EdgeInsets.all(10),
-                //     height: screenHeight(context) / 6,
-                //     width: screenWidth(context) / 1.7,
-                //     decoration: BoxDecoration(
-                //       color: Colors.white,
-                //       borderRadius: BorderRadius.circular(25),
-                //       boxShadow: [
-                //         BoxShadow(
-                //           color: AppColors.primaryColor.withOpacity(0.01),
-                //           blurRadius: 30.0,
-                //           offset: Offset(0, 10),
-                //         ),
-                //       ],
-                //     ),
-                //     alignment: Alignment.center,
-                //     child: ClipRRect(
-                //       borderRadius: BorderRadius.circular(25),
-                //       child: Hero(
-                //         tag: "meetweb",
-                //         child: Image.asset(
-                //           "images/meetweb.png",
-                //           width: screenWidth(context),
-                //         ),
-                //       ),
-                //     ),
-                //   ),
-                // ),
-                //       Column(
-                //         crossAxisAlignment: CrossAxisAlignment.start,
-                //         mainAxisAlignment: MainAxisAlignment.center,
-                //         children: [
-                //           Text(
-                //             "Create",
-                //             style: text22.copyWith(
-                //                 letterSpacing: -2,
-                //                 fontSize: 45.sp,
-                //                 fontWeight: FontWeight.w600,
-                //                 color: AppColors.primaryColor),
-                //           ),
-                //           Text(
-                //             "Meeting",
-                //             style: text22.copyWith(
-                //                 fontSize: 45.sp,
-                //                 fontWeight: FontWeight.w400,
-                //                 color: Colors.grey),
-                //           ),
-                //         ],
-                //       ),
-                //     ],
-                //   ),
-                // ),
                 verticalSpaceLarge,
-                verticalSpaceLarge,
+                verticalSpaceMedium30,
                 AnimatedContainer(
                   duration: Duration(milliseconds: 600),
                   curve: Curves.ease,
@@ -252,96 +221,95 @@ class _CreateMeetState extends State<CreateMeet> {
                           ),
                         ],
                       ),
-                      if (pressed) verticalSpaceMedium20,
-                      if (pressed)
-                        AnimatedOpacity(
-                          duration: Duration(milliseconds: 1000),
-                          opacity: opac,
-                          child: Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                TextButton(
-                                  style: TextButton.styleFrom(
-                                    padding: padding10,
-                                    backgroundColor: Colors.black,
-                                    minimumSize: Size(50.w, 40),
-                                    shape: shape10,
-                                  ),
-                                  onPressed: () {
-                                    FlutterClipboard.copy(code).then((value) {
-                                      var snackbar = SnackBar(
-                                          duration: Duration(seconds: 2),
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 5.h, horizontal: 10.w),
-                                          backgroundColor: Colors.black,
-                                          content: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.check,
-                                                color: Colors.white,
-                                              ),
-                                              horizontalSpaceMedium15,
-                                              Text(
-                                                "Copied to clipboard",
-                                                style: text18.copyWith(
-                                                    color: Colors.white),
-                                              ),
-                                            ],
-                                          ));
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(snackbar);
-                                    });
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.copy,
-                                        color: Colors.white,
-                                        size: 16,
-                                      ),
-                                      horizontalSpaceMedium15,
-                                      Text(
-                                        "Copy ",
-                                        style: text18.copyWith(
-                                            color: Colors.white),
-                                      )
-                                    ],
-                                  ),
+                      verticalSpaceMedium20,
+                      AnimatedOpacity(
+                        duration: Duration(milliseconds: 1000),
+                        opacity: opac,
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              TextButton(
+                                style: TextButton.styleFrom(
+                                  padding: padding10,
+                                  backgroundColor: Colors.black,
+                                  minimumSize: Size(50.w, 40),
+                                  shape: shape10,
                                 ),
-                                TextButton(
-                                  style: TextButton.styleFrom(
-                                    padding: padding10,
-                                    backgroundColor: Colors.black,
-                                    minimumSize: Size(50.w, 40),
-                                    shape: shape10,
-                                  ),
-                                  onPressed: () async {
-                                    await Share.share(
-                                        'Hey, join me on Teamly meeting with this code - $code  \n\n Download Teamly: $appLink');
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.share,
-                                        color: Colors.white,
-                                        size: 16,
-                                      ),
-                                      horizontalSpaceMedium15,
-                                      Text(
-                                        "Share ",
-                                        style: text18.copyWith(
-                                            color: Colors.white),
-                                      )
-                                    ],
-                                  ),
+                                onPressed: () {
+                                  FlutterClipboard.copy(code).then((value) {
+                                    var snackbar = SnackBar(
+                                        duration: Duration(seconds: 2),
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 5.h, horizontal: 10.w),
+                                        backgroundColor: Colors.black,
+                                        content: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.check,
+                                              color: Colors.white,
+                                            ),
+                                            horizontalSpaceMedium15,
+                                            Text(
+                                              "Copied to clipboard",
+                                              style: text18.copyWith(
+                                                  color: Colors.white),
+                                            ),
+                                          ],
+                                        ));
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(snackbar);
+                                  });
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.copy,
+                                      color: Colors.white,
+                                      size: 16,
+                                    ),
+                                    horizontalSpaceMedium15,
+                                    Text(
+                                      "Copy ",
+                                      style:
+                                          text18.copyWith(color: Colors.white),
+                                    )
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                              TextButton(
+                                style: TextButton.styleFrom(
+                                  padding: padding10,
+                                  backgroundColor: Colors.black,
+                                  minimumSize: Size(50.w, 40),
+                                  shape: shape10,
+                                ),
+                                onPressed: () async {
+                                  await Share.share(
+                                      'Hey, join me on Teamly meeting with this code - $code  \n\n Download Teamly: $appLink');
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.share,
+                                      color: Colors.white,
+                                      size: 16,
+                                    ),
+                                    horizontalSpaceMedium15,
+                                    Text(
+                                      "Share ",
+                                      style:
+                                          text18.copyWith(color: Colors.white),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ),
+                      ),
                     ],
                   ),
                 ),
@@ -349,31 +317,36 @@ class _CreateMeetState extends State<CreateMeet> {
                 Center(
                   child: TextButton(
                     style: TextButton.styleFrom(
-                      backgroundColor: AppColors.secondaryColor,
+                      backgroundColor:
+                          pressed ? Colors.white : AppColors.secondaryColor,
                       minimumSize: Size(screenWidth(context) / 1.8, 0),
                       shape: shape10,
                       padding: EdgeInsets.all(10.h),
                     ),
                     onPressed: () async {
-                      // await joinMeet();
                       join();
                     },
-                    child: Text(
-                      pressed ? "Join Now" : "Create Code",
-                      style: text22.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    child: pressed
+                        ? CircularProgressIndicator(
+                            strokeWidth: 3,
+                            color: AppColors.primaryColor,
+                            backgroundColor: Colors.grey[300],
+                          )
+                        : Text(
+                            "Join Now",
+                            style: text22.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                   ),
                 ),
-                if (pressed) verticalSpaceMedium25,
-                if (pressed)
-                  Text(
-                    "By default, your audio and video will be muted but you can turn them ON anytime.",
-                    textAlign: TextAlign.center,
-                    style: text14.copyWith(color: Colors.white70),
-                  )
+                verticalSpaceMedium25,
+                Text(
+                  "By default, your audio and video will be muted but you can turn them ON anytime.",
+                  textAlign: TextAlign.center,
+                  style: text14.copyWith(color: Colors.white70),
+                ),
               ],
             ),
           ],

@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// import 'package:my_team/screens/entry_screen.dart';
 import 'package:my_team/screens/login_screen.dart';
-import 'package:my_team/screens/testHomeAnim.dart';
+import 'package:my_team/screens/home_page.dart';
 
 class AppNavigator extends StatefulWidget {
   @override
@@ -31,7 +30,7 @@ class _AppNavigatorState extends State<AppNavigator> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: isSigned == false ? LoginScreen() : TestHomeAnimated(),
+      body: isSigned == false ? LoginScreen() : HomePage(),
     );
   }
 }

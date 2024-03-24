@@ -1,12 +1,13 @@
-import 'dart:io';
-
+import 'package:dart_jwt_token/dart_jwt_token.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
 import 'package:flutter_utility/constant_utility.dart';
-// import 'package:meet_hour/meet_hour.dart';
-// import 'package:jitsi_meet/jitsi_meet.dart';
+import 'package:my_team/screens/call_screen_get_stream.dart';
 import 'package:my_team/utils/utility.dart';
+import 'package:my_team/utils/variables.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
+import 'package:stream_video_flutter/stream_video_flutter.dart';
 
 class JoinMeet extends StatefulWidget {
   final String username;
@@ -22,7 +23,7 @@ class _JoinMeetState extends State<JoinMeet> {
   TextEditingController controller = TextEditingController(text: "");
   TextEditingController nameC = TextEditingController();
   bool hasError = false;
-  // String errorMessage;
+  bool pressed = false;
 
   @override
   void dispose() {
@@ -30,29 +31,72 @@ class _JoinMeetState extends State<JoinMeet> {
     super.dispose();
   }
 
+  createStreamClientAndConfigure() {
+    String createToken(
+        {required Map payload,
+        required Map<String, dynamic> headers,
+        required SecretKey key}) {
+      String token = "";
+      final jwt = JWT(payload, header: headers);
+      token = jwt.sign(key);
+      return token;
+    }
+
+    final client = StreamVideo(
+      getStreamKey,
+      user: User.regular(
+        userId: auth.FirebaseAuth.instance.currentUser!.uid,
+        role: 'admin',
+        name: nameC.text.isEmpty ? widget.username : nameC.text,
+      ),
+      userToken: createToken(
+          payload: {"user_id": auth.FirebaseAuth.instance.currentUser!.uid},
+          headers: {'alg': 'HS256', 'typ': 'JWT'},
+          key: SecretKey(getStreamSecret)),
+    );
+  }
+
   joinMeet() async {
-    // try {
-    //   Map<FeatureFlagEnum, bool> featureFlags = {
-    //     FeatureFlagEnum.WELCOME_PAGE_ENABLED: false,
-    //     FeatureFlagEnum.ADD_PEOPLE_ENABLED: false,
-    //     FeatureFlagEnum.INVITE_ENABLED: false
-    //   };
-    //   if (Platform.isAndroid) {
-    //     featureFlags[FeatureFlagEnum.CALL_INTEGRATION_ENABLED] = false;
-    //   } else if (Platform.isIOS) {
-    //     featureFlags[FeatureFlagEnum.PIP_ENABLED] = false;
-    //   }
+    try {
+      setState(() {
+        pressed = true;
+      });
 
-    //   var options = MeetHourMeetingOptions(room: controller.text)
-    //     ..userDisplayName = nameC.text.isEmpty ? widget.username : nameC.text
-    //     ..audioMuted = !_controller2.value
-    //     ..videoMuted = !_controller1.value
-    //     ..featureFlags.addAll(featureFlags);
+      StreamVideo.reset();
 
-    //   await MeetHour.joinMeeting(options);
-    // } catch (e) {
-    //   print("Error: $e");
-    // }
+      createStreamClientAndConfigure();
+
+      var call = StreamVideo.instance.makeCall(
+        type: 'default',
+        id: controller.text,
+      );
+
+      await call.getOrCreate().then((value) async {
+        await call.setMicrophoneEnabled(enabled: _controller2.value);
+        await call.setCameraEnabled(enabled: _controller1.value);
+      });
+      setState(() {
+        pressed = false;
+      });
+      await Navigator.of(context).push(PageRouteBuilder(
+        opaque: false,
+        transitionDuration: const Duration(milliseconds: 500),
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return FadeTransition(
+            opacity: animation,
+            child: CallScreenGetStream(
+              call: call,
+            ),
+          );
+        },
+      ));
+    } catch (e) {
+      setState(() {
+        pressed = false;
+      });
+      debugPrint('Error joining call: $e');
+      debugPrint(e.toString());
+    }
   }
 
   @override
@@ -112,66 +156,6 @@ class _JoinMeetState extends State<JoinMeet> {
                 ),
               ],
             ),
-            // SizedBox(
-            //   height: screenHeight(context) / 4,
-            //   width: double.infinity,
-            //   child: Stack(
-            //     children: [
-            //       Positioned(
-            //         right: 0,
-            //         bottom: 0,
-            //         top: 0,
-            //         child: Container(
-            //           padding: EdgeInsets.all(10),
-            //           height: screenHeight(context) / 6,
-            //           width: screenWidth(context) / 1.7,
-            //           decoration: BoxDecoration(
-            //             color: Colors.white,
-            //             borderRadius: BorderRadius.circular(25),
-            //             boxShadow: [
-            //               BoxShadow(
-            //                 color: AppColors.primaryColor.withOpacity(0.01),
-            //                 blurRadius: 30.0,
-            //                 offset: Offset(0, 10),
-            //               ),
-            //             ],
-            //           ),
-            //           alignment: Alignment.center,
-            //           child: ClipRRect(
-            //             borderRadius: BorderRadius.circular(25),
-            //             child: Hero(
-            //               tag: "connect",
-            //               child: Image.asset(
-            //                 "images/connect.png",
-            //                 width: screenWidth(context),
-            //               ),
-            //             ),
-            //           ),
-            //         ),
-            //       ),
-            //       Column(
-            //         crossAxisAlignment: CrossAxisAlignment.start,
-            //         mainAxisAlignment: MainAxisAlignment.center,
-            //         children: [
-            //           Text(
-            //             "Join",
-            //             style: text22.copyWith(
-            //                 fontSize: 50.sp,
-            //                 fontWeight: FontWeight.w600,
-            //                 color: AppColors.primaryColor),
-            //           ),
-            //           Text(
-            //             "Meeting",
-            //             style: text22.copyWith(
-            //                 fontSize: 45.sp,
-            //                 fontWeight: FontWeight.w400,
-            //                 color: Colors.grey),
-            //           ),
-            //         ],
-            //       ),
-            //     ],
-            //   ),
-            // ),
             verticalSpaceLarge,
             Text(
               "Enter meeting code:",
@@ -226,7 +210,6 @@ class _JoinMeetState extends State<JoinMeet> {
               style: text22.copyWith(color: Colors.white60),
             ),
             verticalSpaceSmall,
-
             TextField(
               keyboardType: TextInputType.name,
               style: text22.copyWith(
@@ -265,30 +248,6 @@ class _JoinMeetState extends State<JoinMeet> {
               ),
               controller: nameC,
             ),
-
-            // Container(
-            //   height: 55,
-            //   child: TextFormField(
-            //     controller: nameC,
-            //     cursorColor: AppColors.getPrimaryColor(),
-            //     style: text22.copyWith(
-            //       color: AppColors.getPrimaryColor(),
-            //       fontSize: 28.sp,
-            //     ),
-            //     decoration: InputDecoration(
-            //         hintText: "Leave if you want username",
-            //         hintStyle: text20.copyWith(
-            //           color: Colors.grey,
-            //         ),
-            //         fillColor: Colors.white,
-            //         filled: true,
-            //         border: OutlineInputBorder(
-            //           borderSide: BorderSide.none,
-            //           borderRadius: BorderRadius.circular(5),
-            //         )),
-            //     onChanged: (value) {},
-            //   ),
-            // ),
             verticalSpaceMedium30,
             Text(
               "Other settings",
@@ -309,9 +268,9 @@ class _JoinMeetState extends State<JoinMeet> {
                   ),
                   inactiveChild: Icon(
                     Icons.videocam_off,
-                    color: Colors.white,
+                    color: Colors.red,
                   ),
-                  activeColor: AppColors.secondaryColor,
+                  activeColor: Colors.green,
                   inactiveColor: Colors.black,
                   width: 60,
                   controller: _controller1,
@@ -333,9 +292,9 @@ class _JoinMeetState extends State<JoinMeet> {
                   ),
                   inactiveChild: Icon(
                     Icons.mic_off,
-                    color: Colors.white,
+                    color: Colors.red,
                   ),
-                  activeColor: AppColors.primaryColor,
+                  activeColor: Colors.green,
                   inactiveColor: Colors.black,
                   width: 60,
                   controller: _controller2,
@@ -346,7 +305,8 @@ class _JoinMeetState extends State<JoinMeet> {
             Center(
               child: TextButton(
                 style: TextButton.styleFrom(
-                  backgroundColor: AppColors.secondaryColor,
+                  backgroundColor:
+                      pressed ? Colors.white : AppColors.secondaryColor,
                   minimumSize: Size(screenWidth(context) / 1.8, 0),
                   shape: shape10,
                   padding: EdgeInsets.all(10.h),
@@ -375,13 +335,19 @@ class _JoinMeetState extends State<JoinMeet> {
                     await joinMeet();
                   }
                 },
-                child: Text(
-                  "Join Meeting",
-                  style: text22.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                child: pressed
+                    ? CircularProgressIndicator(
+                        strokeWidth: 3,
+                        color: AppColors.primaryColor,
+                        backgroundColor: Colors.grey[300],
+                      )
+                    : Text(
+                        "Join Meeting",
+                        style: text22.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
               ),
             )
           ],

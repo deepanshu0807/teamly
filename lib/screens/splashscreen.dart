@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_utility/constant_utility.dart';
 import 'package:my_team/auth/navigator.dart';
-import 'package:my_team/screens/testHomeAnim.dart';
+import 'package:my_team/screens/home_page.dart';
 import 'package:my_team/utils/utility.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   startTimer() {
-    Timer(Duration(seconds: 2), changeScreen);
+    Timer(Duration(milliseconds: 1500), changeScreen);
   }
 
   changeScreen() async {
@@ -53,17 +53,6 @@ class _SplashScreenState extends State<SplashScreen> {
             Column(
               mainAxisAlignment: mainC,
               children: [
-                // Center(
-                //   child: Hero(
-                //     tag: "logo",
-                //     child: Image.asset(
-                //       "images/logo.png",
-                //       width: screenWidth(context) / 2,
-                //       //height: 600.h,
-                //     ),
-                //   ),
-                // ),
-                // verticalSpaceLarge,
                 Center(
                   child: Text(
                     'Teamly',
@@ -83,34 +72,6 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
               ],
             ),
-            // SizedBox(
-            //   height: 70.h,
-            //   width: 70.h,
-            //   child: CircularProgressIndicator(
-            //     strokeWidth: 2,
-            //     color: AppColors.primaryColor,
-            //     backgroundColor: Colors.white,
-            //   ),
-            // ),
-            // Column(
-            //   children: [
-            //     Text(
-            //       "Powered by",
-            //       textAlign: TextAlign.center,
-            //       style: text20.copyWith(
-            //         color: Colors.grey,
-            //       ),
-            //     ),
-            //     Text(
-            //       "Jitsi",
-            //       textAlign: TextAlign.center,
-            //       style: text20.copyWith(
-            //         color: Colors.black,
-            //         fontWeight: FontWeight.bold,
-            //       ),
-            //     ),
-            //   ],
-            // )
           ],
         ),
       ),

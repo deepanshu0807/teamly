@@ -15,7 +15,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen>
     with TickerProviderStateMixin {
   //Anims
-  double bottomPos = 120.h;
+  double bottomPos = 140.h;
   double hei = 60;
   double wid = 60;
   bool animplaying = false;
@@ -153,35 +153,56 @@ class _ProfileScreenState extends State<ProfileScreen>
                 ),
                 Positioned(
                   bottom: 20.h,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      fixedSize: Size(screenWidth(context) / 2.5, 40.h),
-                      shape: RoundedRectangleBorder(borderRadius: borderR10),
-                      backgroundColor: Colors.black,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        loading = true;
-                      });
+                  child: Column(
+                    children: [
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          fixedSize: Size(screenWidth(context) / 2.5, 40.h),
+                          shape:
+                              RoundedRectangleBorder(borderRadius: borderR10),
+                          backgroundColor: Colors.black,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            loading = true;
+                          });
 
-                      FirebaseAuth.instance.signOut().then((value) {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AppNavigator()));
-                      });
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.logout_outlined, color: Colors.white),
-                        horizontalSpaceMedium15,
-                        Text(
-                          "Logout",
-                          style: text18.copyWith(color: Colors.white),
-                        )
-                      ],
-                    ),
+                          FirebaseAuth.instance.signOut().then((value) {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AppNavigator()));
+                          });
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.logout_outlined, color: Colors.white),
+                            horizontalSpaceMedium15,
+                            Text(
+                              "Logout",
+                              style: text18.copyWith(color: Colors.white),
+                            )
+                          ],
+                        ),
+                      ),
+                      verticalSpaceMedium15,
+                      Row(
+                        mainAxisAlignment: mainC,
+                        children: [
+                          Text(
+                            "Streaming buddy ",
+                            textAlign: TextAlign.center,
+                            style: text14.copyWith(color: Colors.white54),
+                          ),
+                          horizontalSpaceSmall,
+                          Image.asset(
+                            "images/streamlogoname.png",
+                            width: screenWidth(context) / 4,
+                          )
+                        ],
+                      )
+                    ],
                   ),
                 ),
                 Positioned(
@@ -191,8 +212,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                     onTap: () => Navigator.pop(context),
                     child: Image.asset(
                       "images/back.png",
-                      width: 50.w,
-                      color: AppColors.backgroundColor,
+                      width: 40.w,
+                      color: Colors.white60,
                     ),
                   ),
                 ),
@@ -322,7 +343,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                           opac = animplaying ? 0 : 1;
                                           opac2 = animplaying ? 1 : 0;
                                           bottomPos =
-                                              animplaying ? 20.h : 120.h;
+                                              animplaying ? 20.h : 140.h;
                                           hei = animplaying ? 400.h : 60;
                                           wid = animplaying
                                               ? screenWidth(context) / 1.2
@@ -352,7 +373,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   animplaying = !animplaying;
                                   opac = animplaying ? 0 : 1;
                                   opac2 = animplaying ? 1 : 0;
-                                  bottomPos = animplaying ? 20.h : 120.h;
+                                  bottomPos = animplaying ? 20.h : 140.h;
                                   hei = animplaying ? 400.h : 60;
                                   wid = animplaying
                                       ? screenWidth(context) / 1.2
@@ -381,7 +402,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   animplaying = !animplaying;
                                   opac = animplaying ? 0 : 1;
                                   opac2 = animplaying ? 1 : 0;
-                                  bottomPos = animplaying ? 20.h : 120.h;
+                                  bottomPos = animplaying ? 20.h : 140.h;
                                   hei = animplaying ? 400.h : 60;
                                   wid = animplaying
                                       ? screenWidth(context) / 1.2

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:my_team/screens/homepage.dart';
+import 'package:my_team/screens/home_page.dart';
 import 'package:my_team/services/auth-exception-handler.dart';
 import 'package:my_team/services/auth-result-status.dart';
 import 'package:my_team/services/firebase-auth-helper.dart';
@@ -11,7 +11,6 @@ import 'package:my_team/utils/utility.dart';
 import 'package:my_team/widgets/inverted_top_border.dart';
 import 'package:my_team/widgets/snackbar.dart';
 import 'package:my_team/widgets/text_input_find_out.dart';
-import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import '../widgets/snake_button.dart';
 
@@ -25,27 +24,29 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController passwordC = TextEditingController();
   TextEditingController nameC = TextEditingController();
 
-  final RoundedLoadingButtonController _btnController =
-      RoundedLoadingButtonController();
+  bool isLoading = false;
 
   final resizeNotifier = ValueNotifier(false);
 
   _registerUser() async {
+    setState(() {
+      isLoading = true;
+    });
     final status = await FirebaseAuthHelper().createAccount(
         email: emailC.text, pass: passwordC.text, name: nameC.text);
     if (status == AuthResultStatus.successful) {
-      _btnController.success();
       resizeNotifier.value = false;
+      setState(() {
+        isLoading = false;
+      });
       Timer(Duration(seconds: 2), () {
         Navigator.pushReplacement(
             context, CupertinoPageRoute(builder: (context) => HomePage()));
       });
     } else {
-      _btnController.error();
-      Timer(Duration(seconds: 1), () {
-        _btnController.reset();
+      setState(() {
+        isLoading = false;
       });
-
       final errorMsg = AuthExceptionHandler.generateExceptionMessage(status);
       ScaffoldMessenger.of(context)
           .showSnackBar(generateErrorMessage(errorMsg));
@@ -141,40 +142,28 @@ class _RegisterPageState extends State<RegisterPage> {
                                         TextInputType.visiblePassword,
                                   ),
                                   verticalSpaceMedium30,
-                                  SnakeButton(
-                                    borderColor: Colors.black,
-                                    onPressed: () {
-                                      _registerUser();
-                                    },
-                                    child: Text(
-                                      'Signup',
-                                      style: GoogleFonts.dmSerifDisplay(
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.w700,
-                                        color: AppColors.primaryColor,
-                                        decorationStyle:
-                                            TextDecorationStyle.wavy,
-                                      ),
-                                    ),
-                                  ),
-                                  // SizedBox(
-                                  //   width: size.width * .65,
-                                  //   child: RoundedLoadingButton(
-                                  //     borderRadius: 5,
-                                  //     successColor: Colors.green,
-                                  //     errorColor: Colors.red,
-                                  //     color: AppColors.primaryColor,
-                                  //     child: Text(
-                                  //       "Create Account",
-                                  //       style: text22.copyWith(
-                                  //         color: Colors.white,
-                                  //         fontWeight: FontWeight.bold,
-                                  //       ),
-                                  //     ),
-                                  //     controller: _btnController,
-                                  //     onPressed: () => _registerUser(),
-                                  //   ),
-                                  // )
+                                  isLoading
+                                      ? CircularProgressIndicator(
+                                          strokeWidth: 4,
+                                          color: AppColors.primaryColor,
+                                          backgroundColor: Colors.grey[300],
+                                        )
+                                      : SnakeButton(
+                                          borderColor: Colors.black,
+                                          onPressed: () {
+                                            _registerUser();
+                                          },
+                                          child: Text(
+                                            'Signup',
+                                            style: GoogleFonts.dmSerifDisplay(
+                                              fontSize: 22,
+                                              fontWeight: FontWeight.w700,
+                                              color: AppColors.primaryColor,
+                                              decorationStyle:
+                                                  TextDecorationStyle.wavy,
+                                            ),
+                                          ),
+                                        ),
                                 ],
                               ),
                             ),

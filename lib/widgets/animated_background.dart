@@ -16,7 +16,7 @@ class _AnimatedBackgroundState extends State<AnimatedBackground> {
   List<String> captions = [
     "Create or Join meetings seamlessly!",
     "Your meetings are encrypted and we respect your privacy",
-    "Create office meetings, organise classes, connect with friends... There's a lot to do"
+    "Connect with your family or friends in a go!"
   ];
 
   @override

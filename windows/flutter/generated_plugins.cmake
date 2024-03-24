@@ -3,7 +3,9 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  connectivity_plus
   firebase_core
+  flutter_webrtc
   share_plus
   url_launcher_windows
 )

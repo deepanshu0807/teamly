@@ -61,7 +61,7 @@ class AuthExceptionHandler {
             "The email has already been registered. Please login or reset your password.";
         break;
       default:
-        errorMessage = "An undefined Error happened.";
+        errorMessage = "Email or password is incorrect";
     }
 
     return errorMessage;
